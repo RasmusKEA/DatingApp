@@ -2,6 +2,8 @@ package com.example.demo.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 public class DatingController {
@@ -19,6 +21,17 @@ public class DatingController {
     @GetMapping("/register")
     public String register(){
         return "register.html";
+    }
+
+    @PostMapping("/loginPost")
+    public String formPost(WebRequest wr){
+        //Får informationen fra webrequesten
+        String name = wr.getParameter("name");
+        String password = wr.getParameter("password");
+
+
+
+        return "redirect:/";
     }
 
 }
