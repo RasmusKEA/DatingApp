@@ -10,6 +10,8 @@ public class User {
         this.email = email;
     }
 
+    //qoochie
+
     public String getFullName() {
         return fullName;
     }
