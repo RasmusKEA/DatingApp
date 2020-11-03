@@ -7,29 +7,23 @@ import java.sql.*;
 public class UserRepository {
     private Connection establishConnection() throws SQLException {
         //Lav en forbindelse
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dating?useLegacyDatetimeCode=false","user","password");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dating?serverTimezone=UTC","user","password");
 
 
         return conn;
     }
 
-    public void createUser(String name, String email, String username, String password){
+    public void createUser(String username, String password, String name, String email){
         try {
             PreparedStatement ps = establishConnection().prepareStatement("INSERT INTO users (username, password, fullname, email) VALUES (?, ?, ?, ?)");
+
+            //TODO Sørg for der ikke kan være flere med samme email og username
 
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, name);
             ps.setString(4, email);
-
-            System.out.println(name);
-
-            ps.executeQuery();
-
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-
-            }
+            ps.executeUpdate();
 
         } catch (SQLException e) {
         e.getMessage();

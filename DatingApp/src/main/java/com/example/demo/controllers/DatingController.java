@@ -44,11 +44,7 @@ public class DatingController {
         String username = wr.getParameter("username");
         String password = wr.getParameter("password");
 
-        User us = new User(name, username, password, email);
-        System.out.println(name + email + username + password);
-
         UserRepository ur = new UserRepository();
-
         ur.createUser(username, password, name, email);
 
         return "redirect:/";
