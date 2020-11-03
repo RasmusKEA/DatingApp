@@ -13,7 +13,7 @@ public class DatingController {
 
     @GetMapping("/login")
     public String login(){
-        return "about.html";
+        return "login.html";
     }
 
     @GetMapping("/register")
