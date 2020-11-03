@@ -9,8 +9,7 @@ public class User {
         this.password = password;
         this.email = email;
     }
-
-    //qoochie
+    
 
     public String getFullName() {
         return fullName;
