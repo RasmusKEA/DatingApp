@@ -1,0 +1,121 @@
+.loginButton{
+	float: right;
+	border-radius: 100px;
+  	border: 2px solid #FA6980;
+  	background: white;
+  	width: 100px;
+  	height: 40px;
+  	color: #FA6980;
+  	margin-top: 25px;
+
+}
+
+.logo{
+	float: left;
+	margin-top: 25px;
+}
+
+.regButton{
+	position: absolute;
+ 	top:  50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+  	color: white;
+  	border-radius: 100px;
+  	background: #FA6980;
+  	border: #FA6980;
+  	width: 140px;
+  	height: 40px;
+}
+
+.loginEmail, .loginPw{
+width: 300px;
+	padding: 12px; 
+	border: 1px solid #ccc;
+	border-radius: 4px; 
+	margin-top: 25px;
+    display: block;
+}
+
+.loginSubmit {
+	color: white;
+  	border-radius: 100px;
+  	background: #FA6980;
+  	border: #FA6980;
+  	width: 140px;
+  	height: 40px;
+  	margin-top: 15px;
+}
+
+.loginReset{
+	color: #FA6980;
+  	border-radius: 100px;
+  	background: white;
+  	border: #FA6980 2px solid;
+  	width: 140px;
+  	height: 40px;
+  	margin-top: 15px;
+}
+
+.loginDetailDiv{
+	position: absolute;
+ 	top:  50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+}
+
+
+
+
+.register{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 1px ;
+	text-align: center;
+}
+
+
+.regName, .regMail, .regUsername, .regPw {
+	width: 300px;
+	padding: 12px; 
+	border: 1px solid #ccc;
+	border-radius: 4px; 
+	margin-top: 25px;
+    display: block;
+
+}
+
+.registerbutton{
+	color: white;
+  	border-radius: 100px;
+  	background: #FA6980;
+  	border: #FA6980;
+  	width: 140px;
+  	height: 40px;
+  	margin-top: 15px;
+  	margin-left: 10px;
+
+}
+
+.resetbutton{
+	color: white;
+	border-radius: 100px;
+	background: white;
+	width: 140px;
+	height: 40px;
+	margin-top 15px;
+	border: 2px solid #FA6980;
+	color: #FA6980;
+	margin-right: 10px;
+}
+
+.logo{
+	float: left;
+	margin-top: 25px;
+
+}
+
+
+
