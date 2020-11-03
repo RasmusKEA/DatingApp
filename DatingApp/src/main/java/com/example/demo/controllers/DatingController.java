@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +27,11 @@ public class DatingController {
     @PostMapping("/loginPost")
     public String formPost(WebRequest wr){
         //Får informationen fra webrequesten
-        String name = wr.getParameter("name");
+        String email = wr.getParameter("email");
         String password = wr.getParameter("password");
 
-
+        UserRepository ur = new UserRepository();
+        ur.verifyUserLogin(email, password);
 
         return "redirect:/";
     }
