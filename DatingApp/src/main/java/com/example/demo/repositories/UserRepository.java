@@ -13,22 +13,32 @@ public class UserRepository {
         return conn;
     }
 
-    public void createUser(String username, String password, String name, String email){
+    public void createUser(String username, String password, String name, String email) throws SQLIntegrityConstraintViolationException{
+
+
+
+        PreparedStatement ps = null;
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("INSERT INTO users (username, password, fullname, email) VALUES (?, ?, ?, ?)");
-
-            //TODO Sørg for der ikke kan være flere med samme email og username
-
+            ps = establishConnection().prepareStatement("INSERT INTO users (username, password, fullname, email) VALUES (?, ?, ?, ?)");
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, name);
             ps.setString(4, email);
+
             ps.executeUpdate();
-
+            System.out.println("Din konto er nu blevet oprettet");
         } catch (SQLException e) {
-        e.getMessage();
-
+            if(e instanceof SQLIntegrityConstraintViolationException){
+                System.out.println("Email eller brugernavn er allerede i brug " + e.getMessage());
+            }
+            System.out.println("Fejl i createUser " + e.getMessage());
         }
+
+
+        //TODO Sørg for der ikke kan være flere med samme email og username
+
+
+
     }
 
     public void verifyUserLogin(String email, String password){

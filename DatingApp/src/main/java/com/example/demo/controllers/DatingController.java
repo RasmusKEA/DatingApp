@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 @Controller
 public class DatingController {
 
@@ -45,7 +47,12 @@ public class DatingController {
         String password = wr.getParameter("password");
 
         UserRepository ur = new UserRepository();
-        ur.createUser(username, password, name, email);
+        try {
+            ur.createUser(username, password, name, email);
+        } catch (SQLIntegrityConstraintViolationException throwables) {
+            throwables.printStackTrace();
+            System.out.println("Den email eller brugernavn er allerede i brug på siden");
+        }
 
         return "redirect:/";
     }
