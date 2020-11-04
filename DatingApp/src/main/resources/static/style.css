@@ -12,7 +12,7 @@
 
 .logo{
 	float: left;
-	margin-top: 25px;
+
 }
 
 .regButton{
@@ -105,15 +105,137 @@ width: 300px;
 	background: white;
 	width: 140px;
 	height: 40px;
-	margin-top 15px;
+	margin-top: 15px;
 	border: 2px solid #FA6980;
 	color: #FA6980;
 	margin-right: 10px;
 }
 
-.logo{
-	float: left;
-	margin-top: 25px;
+
+
+.vr{
+  border: 2px #F6F8F9;
+  background: #F6F8F9;
+  max-width: 100%;
+
+}
+
+.myProfile-head{
+  text-decoration: none;
+  margin-top: 20px;
+  float: right;
+  font-size: 24px;
+  color: #343638;
+  opacity: 50%;
+}
+
+.myProfile-head1{
+  text-decoration: none;
+  margin-top: 20px;
+  float: right;
+  margin-left: 20px;
+  font-size: 24px;
+  color: #343638;
+}
+
+.explore-head{
+  text-decoration: none;
+  margin-top: 20px;
+  float: right;
+  font-size: 24px;
+  color: #343638;
+  opacity: 50%;
+}
+
+.explore-head1{
+  text-decoration: none;
+  margin-top: 20px;
+  float: right;
+  margin-right: 20px;
+  font-size: 24px;
+  color: #343638;
+}
+
+.placeholder-img{
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+}
+
+.plus-img{
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top:  70%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+}
+
+.negative-img{
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top:  70%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+}
+
+.candidateList{
+  position: absolute;
+  text-decoration: none;
+  margin-top: 20px;
+  top: 50%;
+  left: 75%;
+  font-size: 24px;
+  color: #FA6980;
+}
+
+.candidate-nav1{
+  text-decoration: none;
+  margin-top: 20px;
+  float: right;
+  font-size: 24px;
+  color: #343638;
+  opacity: 50%;
+}
+
+.candidate-nav{
+  text-decoration: none;
+  margin-top: 20px;
+  float: right;
+  font-size: 24px;
+  color: #343638;
+  opacity: 50%;
+  margin-left: 20px;
+}
+
+.oldPw, .newPw, .oldEmail, .newEmail  {
+    width: 300px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 30px;
+    display: block;
+
+}
+
+.tm{
+    margin-top: 50px;
+}
+
+
+.submitEmail, .submitPassword{
+    color: white;
+    border-radius: 100px;
+    background: #FA6980;
+    border: #FA6980;
+    width: 140px;
+    height: 40px;
+    margin-top: 15px;
+    margin-left: 75px;
 
 }
 

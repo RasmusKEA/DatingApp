@@ -27,6 +27,22 @@ public class DatingController {
         return "register.html";
     }
 
+    @GetMapping("/myProfile")
+    public String myProfile(){
+        return "myProfile.html";
+    }
+
+    @GetMapping("/explore")
+    public String explore(){
+        return "explore.html";
+    }
+
+    @GetMapping("/candidateList")
+    public String candidateList(){
+        return "candidateList.html";
+    }
+
+
     @PostMapping("/loginPost")
     public String formPost(WebRequest wr){
         //Får informationen fra webrequesten
@@ -56,5 +72,7 @@ public class DatingController {
 
         return "redirect:/";
     }
+
+
 
 }

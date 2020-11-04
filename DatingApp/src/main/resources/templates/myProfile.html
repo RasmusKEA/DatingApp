@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MIN PROFIL</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+	<div class="container vr">
+    	<div class="row">
+      	  	<div class="col-sm">
+         	   <img class="logo" src="online-dating.png" alt="logo" style="width: 75px; height: 75px;">
+        	</div>
+        	<div class="col-sm">
+        		<a href="/myProfile"><p class="myProfile-head1">MIN PROFIL</p></a>
+      			<a href="/explore"><p class="myProfile-head">UDFORSK</p></a>
+    		</div>
+   	 	</div>
+	</div>
+  <div class="container">
+      <div class="row tm">
+        <form action="/PasswordPost" method="post">
+          <input type="password" class="oldPw" id="oldPassword" name="password" placeholder="Gammelt Kodeord" required>
+          <input type="password" class="newPw" id="newPassword1" name="password" placeholder="Nyt Kodeord" required>
+          <input type="password" class="newPw" id="newPassword2" name="password" placeholder="Nyt Kodeord" required>
+          <input type="submit" value="Gem Kodeord" class="submitPassword">
+        </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row tm">
+        <form action="/EmailPost" method="post">
+          <input type="email" class="oldEmail" id="oldEmail" name="email" placeholder="Gammel email" required>
+          <input type="email" class="newEmail" id="newEmail1" name="email" placeholder="Ny email" required>
+          <input type="email" class="newEmail" id="newEmail2" name="email" placeholder="Ny email" required>
+          <input type="submit" value="Gem Email" class="submitPassword">
+
+          </form>
+        </div>
+      </div>
+    </div>
+  
+
+
+</body>
+</html>

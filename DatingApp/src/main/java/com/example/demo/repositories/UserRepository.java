@@ -62,4 +62,14 @@ public class UserRepository {
         }
 
     }
+
+    public void findRandomUser(){
+
+    }
+
+    private int findMax(){
+        return 0;
+    }
+
+
 }
