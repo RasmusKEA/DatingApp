@@ -50,9 +50,17 @@ public class DatingController {
         String password = wr.getParameter("password");
 
         UserRepository ur = new UserRepository();
-        ur.verifyUserLogin(email, password);
+        boolean loginSecure = ur.verifyUserLogin(email, password);
 
-        return "redirect:/";
+        ur.findMax();
+
+        if(loginSecure){
+            return "redirect:/myProfile";
+        }else{
+            return "redirect:/login";
+        }
+
+
     }
     @PostMapping("/registerPost")
     public String registerPost(WebRequest wr){
