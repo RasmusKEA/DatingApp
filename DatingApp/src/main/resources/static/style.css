@@ -239,5 +239,29 @@ width: 300px;
 
 }
 
+.submitDescription{
+    color: white;
+    border-radius: 100px;
+    background: #FA6980;
+    border: #FA6980;
+    width: 140px;
+    height: 40px;
+    margin-top: 15px;
+    margin-left: 175px;
+}
 
+.billedeUpload {
+    width: 100px;
+    height: 30px;
+}
+
+#infoBox{
+    resize: none;
+    width: 500px;
+    height: 250px;
+    padding: 12px;
+    margin-top: 30px;
+    display: block;
+
+}
 

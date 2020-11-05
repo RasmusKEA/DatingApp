@@ -3,7 +3,7 @@
 <head>
 	<title>MIN PROFIL</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link href="style.css" type="text/css" rel="stylesheet">
+    <link href="../../../../../../Dating%20html/style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 
@@ -20,27 +20,51 @@
 	</div>
   <div class="container">
       <div class="row tm">
+        <div class="col-sm">
         <form action="/PasswordPost" method="post">
           <input type="password" class="oldPw" id="oldPassword" name="password" placeholder="Gammelt Kodeord" required>
-          <input type="password" class="newPw" id="newPassword1" name="password" placeholder="Nyt Kodeord" required>
-          <input type="password" class="newPw" id="newPassword2" name="password" placeholder="Nyt Kodeord" required>
+          <input type="password" class="newPw" id="newPassword" name="password" placeholder="Nyt Kodeord" required>
+          <input type="password" class="newPw" id="newPassword" name="password" placeholder="Nyt Kodeord" required>
           <input type="submit" value="Gem Kodeord" class="submitPassword">
         </form>
       </div>
+
+      <div class="col-sm">
+            <form action="/action_page.php">
+            <input type="file" id="myFile" name="filename">
+            <input type="submit">
+
+          </div>
     </div>
+  </div> 
+
     <div class="container">
       <div class="row tm">
+        <div class="col-sm">
         <form action="/EmailPost" method="post">
           <input type="email" class="oldEmail" id="oldEmail" name="email" placeholder="Gammel email" required>
-          <input type="email" class="newEmail" id="newEmail1" name="email" placeholder="Ny email" required>
-          <input type="email" class="newEmail" id="newEmail2" name="email" placeholder="Ny email" required>
+          <input type="email" class="newEmail" id="newEmail" name="email" placeholder="Ny email" required>
+          <input type="email" class="newEmail" id="newEmail" name="email" placeholder="Ny email" required>
           <input type="submit" value="Gem Email" class="submitPassword">
-
           </form>
+          </div>
+          <div class="col-sm">
+            <div class="textarea">
+              <form action="/infoPost" method="post">
+<textarea id="infoBox" name="beskrivelse" rows="10" cols="50">
+  Lav en beskrivelse om dig selv
+  </textarea>
+  <input type="submit" value="Gem Description" class="submitDescription">
+  </form>
+       </div>
         </div>
       </div>
-    </div>
-  
+</form>
+</div>
+
+
+
+
 
 
 </body>
