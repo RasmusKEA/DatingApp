@@ -47,7 +47,6 @@ public class DatingController {
 
     @PostMapping("/loginPost")
     public String formPost(WebRequest wr, Model userModel){
-        //Får informationen fra webrequesten
         String email = wr.getParameter("email");
         String password = wr.getParameter("password");
 
@@ -59,7 +58,6 @@ public class DatingController {
         userModel.addAttribute("userToDisplay", userToDisplay);
 
         if(loginSecure){
-
             return "redirect:/myProfile";
         }else{
             return "redirect:/login";
