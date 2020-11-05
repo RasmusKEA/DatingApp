@@ -60,7 +60,7 @@ public class DatingController {
 
         if(loginSecure){
 
-            return "myProfile";
+            return "redirect:/myProfile";
         }else{
             return "redirect:/login";
         }
