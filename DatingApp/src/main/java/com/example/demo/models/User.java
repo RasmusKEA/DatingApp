@@ -1,7 +1,18 @@
 package com.example.demo.models;
 
 public class User {
-    private String fullName, username, password, email;
+    private String fullName, username, password, email, bio;
+    private int userid;
+
+    public User(int userid, String username, String password, String fullName, String email, String bio) {
+        this.fullName = fullName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.userid = userid;
+        this.bio = bio;
+
+    }
 
     public User(String fullName, String username, String password, String email) {
         this.fullName = fullName;
@@ -21,6 +32,21 @@ public class User {
         this.email = email;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
 
     public String getFullName() {
         return fullName;

@@ -36,7 +36,7 @@ public class DatingController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         model.addAttribute("userToDisplay", userToDisplay);
-        System.out.println("Printing from myProfile "+ user.getEmail());
+        System.out.println("Printing from myProfile "+ user.getBio());
         if(user!=null){
             return "myProfile";
         } else{
@@ -59,13 +59,13 @@ public class DatingController {
     public String formPost(HttpServletRequest request, Model userModel){
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        System.out.println(email);
-
-
         User user = ur.login(email, password);
-        System.out.println(user.getEmail());
-        HttpSession session = request.getSession();
 
+        if(user == null){
+            return "redirect:/";
+        }
+
+        HttpSession session = request.getSession();
         session.setAttribute("user", user);
         ur.findMax();
         userToDisplay = ur.findUserByMail(email);

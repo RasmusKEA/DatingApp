@@ -10,13 +10,13 @@ import java.util.Random;
 public class UserRepository {
     private Connection establishConnection() throws SQLException {
         //Lav en forbindelse
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dating?serverTimezone=UTC","user","password");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dating?serverTimezone=UTC", "user", "password");
 
 
         return conn;
     }
 
-    public User createUser(String username, String password, String name, String email) throws SQLIntegrityConstraintViolationException{
+    public User createUser(String username, String password, String name, String email) throws SQLIntegrityConstraintViolationException {
         User user = null;
 
 
@@ -31,7 +31,7 @@ public class UserRepository {
             ps.executeUpdate();
             System.out.println("Din konto er nu blevet oprettet");
         } catch (SQLException e) {
-            if(e instanceof SQLIntegrityConstraintViolationException){
+            if (e instanceof SQLIntegrityConstraintViolationException) {
                 System.out.println("Email eller brugernavn er allerede i brug " + e.getMessage());
             }
             System.out.println("Fejl i createUser " + e.getMessage());
@@ -42,10 +42,9 @@ public class UserRepository {
         //TODO Sørg for der ikke kan være flere med samme email og username
 
 
-
     }
 
-    public boolean verifyUserLogin(String email, String password){
+    public boolean verifyUserLogin(String email, String password) {
         try {
             PreparedStatement ps = establishConnection().prepareStatement("SELECT email, password FROM users WHERE email like ? AND password like ?");
             ps.setString(1, email);
@@ -55,10 +54,10 @@ public class UserRepository {
             String dbEmail = rs.getString(1);
             String dbPword = rs.getString(2);
 
-            if(email.equals(dbEmail) && password.equals(dbPword)){
+            if (email.equals(dbEmail) && password.equals(dbPword)) {
                 System.out.println("Korrekt login, velkommen");
                 return true;
-            }else{
+            } else {
                 System.out.println("Username eller password er ikke korrekt");
                 return false;
             }
@@ -69,7 +68,7 @@ public class UserRepository {
         return false;
     }
 
-    public void findRandomUser(int maxID){
+    public void findRandomUser(int maxID) {
         Random r = new Random();
         int result = r.nextInt((maxID + 1) - 2) + 2;
         System.out.println("result: " + result);
@@ -83,13 +82,12 @@ public class UserRepository {
             System.out.println(rs.getString(1));
 
 
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public int findMax(){
+    public int findMax() {
         int maxID = 0;
         try {
             PreparedStatement ps = establishConnection().prepareStatement("SELECT COUNT(*) FROM users;");
@@ -105,7 +103,7 @@ public class UserRepository {
         return maxID;
     }
 
-    public User findUserByMail(String email){
+    public User findUserByMail(String email) {
         PreparedStatement ps = null;
         User user = null;
         try {
@@ -123,7 +121,7 @@ public class UserRepository {
         return user;
     }
 
-    public User login(String email, String password){
+    public User login(String email, String password) {
         User user = null;
         try {
             PreparedStatement ps = establishConnection().prepareStatement("SELECT email, password FROM users WHERE email like ? AND password like ?");
@@ -134,11 +132,11 @@ public class UserRepository {
             String dbEmail = rs.getString(1);
             String dbPword = rs.getString(2);
 
-            if(email.equals(dbEmail) && password.equals(dbPword)){
+            if (email.equals(dbEmail) && password.equals(dbPword)) {
                 System.out.println("Korrekt login, velkommen");
-                user = new User(email,password);
-                return user;
-            }else{
+                user = new User(email, password);
+                return fullUserObject(email);
+            } else {
                 System.out.println("Username eller password er ikke korrekt");
                 return null;
             }
@@ -165,6 +163,47 @@ public class UserRepository {
         }
 
     }
+
+    public User fullUserObject(String email) {
+        User user = null;
+
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, username, password, fullname, email, bio FROM users WHERE email like ?");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            int dbUserID = rs.getInt(1);
+            String dbUsername = rs.getString(2);
+            String dbPassword = rs.getString(3);
+            String dbFullName = rs.getString(4);
+            String dbEmail = rs.getString(5);
+            String dbBio = rs.getString(6);
+
+            user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    public String getBio(String email) {
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT bio FROM users where email like ?");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String bio = rs.getString(1);
+            System.out.println(rs.getString(1));
+            return bio;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
 

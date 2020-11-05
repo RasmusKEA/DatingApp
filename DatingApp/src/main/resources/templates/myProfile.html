@@ -10,7 +10,7 @@
 
 
 
-<p th:text="${userToDisplay.getEmail()}"></p>
+<p th:text="${userToDisplay.getBio()}"></p>
 
 
 <div class="container vr">
@@ -57,7 +57,7 @@
         <div class="col-sm">
             <div class="textarea">
                 <form action="/infoPost" method="post">
-                    <textarea id="infoBox" name="bio" rows="10" cols="50">Lav en beskrivelse om dig selv</textarea>
+                    <textarea id="infoBox" name="bio" rows="10" cols="50" th:text="${userToDisplay.getBio()}" placeholder="Beskriv dig selv her..."></textarea>
                     <input type="submit" value="Gem Description" class="submitDescription">
                 </form>
             </div>
