@@ -6,12 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class DatingController {
+    UserRepository ur = new UserRepository();
     User userToDisplay;
 
     @GetMapping("/")
@@ -30,8 +32,16 @@ public class DatingController {
     }
 
     @GetMapping("/myProfile")
-    public String myProfile(){
-        return "myProfile.html";
+    public String myProfile(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("userToDisplay", userToDisplay);
+        System.out.println("Printing from myProfile "+ user.getEmail());
+        if(user!=null){
+            return "myProfile";
+        } else{
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/explore")
@@ -46,34 +56,31 @@ public class DatingController {
 
 
     @PostMapping("/loginPost")
-    public String formPost(WebRequest wr, Model userModel){
-        String email = wr.getParameter("email");
-        String password = wr.getParameter("password");
+    public String formPost(HttpServletRequest request, Model userModel){
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        System.out.println(email);
 
-        UserRepository ur = new UserRepository();
-        boolean loginSecure = ur.verifyUserLogin(email, password);
+
+        User user = ur.login(email, password);
+        System.out.println(user.getEmail());
+        HttpSession session = request.getSession();
+
+        session.setAttribute("user", user);
         ur.findMax();
-
         userToDisplay = ur.findUserByMail(email);
-        userModel.addAttribute("userToDisplay", userToDisplay);
-
-        if(loginSecure){
-            return "redirect:/myProfile";
-        }else{
-            return "redirect:/login";
-        }
 
 
+        return "redirect:/myProfile";
     }
-    @PostMapping("/registerPost")
-    public String registerPost(WebRequest wr){
-        //Får informationen fra webrequesten
-        String name = wr.getParameter("name");
-        String email = wr.getParameter("email");
-        String username = wr.getParameter("username");
-        String password = wr.getParameter("password");
 
-        UserRepository ur = new UserRepository();
+    @PostMapping("/registerPost")
+    public String registerPost(HttpServletRequest request, Model model){
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
         try {
             ur.createUser(username, password, name, email);
         } catch (SQLIntegrityConstraintViolationException throwables) {
@@ -84,6 +91,18 @@ public class DatingController {
         return "redirect:/";
     }
 
+    @PostMapping("/infoPost")
+    public String myProfileBio(HttpServletRequest request, Model model){
+        String bio = request.getParameter("bio");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        System.out.println(user.getEmail());
+        System.out.println(bio);
+
+        UserRepository ur = new UserRepository();
+        ur.saveUserBio(bio, user.getEmail());
+        return "redirect:/myProfile";
+    }
 
 
 }

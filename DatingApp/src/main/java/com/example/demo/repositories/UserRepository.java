@@ -16,8 +16,8 @@ public class UserRepository {
         return conn;
     }
 
-    public void createUser(String username, String password, String name, String email) throws SQLIntegrityConstraintViolationException{
-
+    public User createUser(String username, String password, String name, String email) throws SQLIntegrityConstraintViolationException{
+        User user = null;
 
 
         PreparedStatement ps = null;
@@ -27,7 +27,7 @@ public class UserRepository {
             ps.setString(2, password);
             ps.setString(3, name);
             ps.setString(4, email);
-
+            user = new User(name, username, password, email);
             ps.executeUpdate();
             System.out.println("Din konto er nu blevet oprettet");
         } catch (SQLException e) {
@@ -37,6 +37,7 @@ public class UserRepository {
             System.out.println("Fejl i createUser " + e.getMessage());
         }
 
+        return user;
 
         //TODO Sørg for der ikke kan være flere med samme email og username
 
@@ -119,11 +120,53 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
         return user;
     }
 
+    public User login(String email, String password){
+        User user = null;
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT email, password FROM users WHERE email like ? AND password like ?");
+            ps.setString(1, email);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String dbEmail = rs.getString(1);
+            String dbPword = rs.getString(2);
+
+            if(email.equals(dbEmail) && password.equals(dbPword)){
+                System.out.println("Korrekt login, velkommen");
+                user = new User(email,password);
+                return user;
+            }else{
+                System.out.println("Username eller password er ikke korrekt");
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void saveUserBio(String bio, String email) {
+        PreparedStatement ps = null;
+
+        try {
+            ps = establishConnection().prepareStatement("UPDATE users SET bio = ? WHERE (email = ?)");
+
+            ps.setString(1, bio);
+            ps.setString(2, email);
+            ps.executeUpdate();
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
 
 }
+
+
+
