@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 <html>
 <head>
 	<title>MIN PROFIL</title>
@@ -6,6 +7,8 @@
     <link href="style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
+
+<p>Velkommen tilbage, </p><p th:text="${userToDisplay.getFullName()}"></p><p>. Her kan du ændre din profil.</p>
 
 	<div class="container vr">
     	<div class="row">
@@ -35,13 +38,10 @@
           <input type="email" class="newEmail" id="newEmail1" name="email" placeholder="Ny email" required>
           <input type="email" class="newEmail" id="newEmail2" name="email" placeholder="Ny email" required>
           <input type="submit" value="Gem Email" class="submitPassword">
-
           </form>
         </div>
       </div>
     </div>
-  
-
 
 </body>
 </html>

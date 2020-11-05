@@ -10,6 +10,17 @@ public class User {
         this.email = email;
     }
 
+    public User(String fullName, String username, String email){
+        this.fullName = fullName;
+        this.username = username;
+        this.email = email;
+    }
+
+    public User(String email, String password){
+        this.password = password;
+        this.email = email;
+    }
+
 
     public String getFullName() {
         return fullName;

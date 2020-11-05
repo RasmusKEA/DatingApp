@@ -104,5 +104,26 @@ public class UserRepository {
         return maxID;
     }
 
+    public User findUserByMail(String email){
+        PreparedStatement ps = null;
+        User user = null;
+        try {
+            ps = establishConnection().prepareStatement("SELECT email, username, fullname FROM users WHERE email like ?");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String dbEmail = rs.getString(1);
+            String dbUsername = rs.getString(3);
+            String dbFullName = rs.getString(3);
+            user = new User(dbFullName, dbUsername, dbEmail);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+        return user;
+    }
+
 
 }

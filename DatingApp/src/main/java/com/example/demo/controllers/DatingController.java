@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
@@ -11,6 +12,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class DatingController {
+    User userToDisplay;
 
     @GetMapping("/")
     public String index(){
@@ -44,18 +46,21 @@ public class DatingController {
 
 
     @PostMapping("/loginPost")
-    public String formPost(WebRequest wr){
+    public String formPost(WebRequest wr, Model userModel){
         //Får informationen fra webrequesten
         String email = wr.getParameter("email");
         String password = wr.getParameter("password");
 
         UserRepository ur = new UserRepository();
         boolean loginSecure = ur.verifyUserLogin(email, password);
-
         ur.findMax();
 
+        userToDisplay = ur.findUserByMail(email);
+        userModel.addAttribute("userToDisplay", userToDisplay);
+
         if(loginSecure){
-            return "redirect:/myProfile";
+
+            return "myProfile";
         }else{
             return "redirect:/login";
         }
