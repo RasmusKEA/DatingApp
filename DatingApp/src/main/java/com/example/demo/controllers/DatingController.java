@@ -110,4 +110,34 @@ public class DatingController {
         return "redirect:/myProfile";
     }
 
+    @PostMapping("/PasswordPost")
+    public String changePassword(HttpServletRequest request, Model model){
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String newPassword1 = request.getParameter("newPassword1");
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        UserRepository ur = new UserRepository();
+        ur.updatePassword(oldPassword, newPassword, newPassword1,user.getUserid());
+
+        return "redirect:/myProfile";
+    }
+
+
+    @PostMapping("/EmailPost")
+    public String changeEmail(HttpServletRequest request, Model model){
+        String oldEmail = request.getParameter("oldEmail");
+        String newEmail = request.getParameter("newEmail");
+        String newEmail1 = request.getParameter("newEmail1");
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        UserRepository ur = new UserRepository();
+        ur.updateEmail(oldEmail, newEmail, newEmail1,user.getUserid());
+
+        return "redirect:/myProfile";
+    }
 }
