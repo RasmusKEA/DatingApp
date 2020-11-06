@@ -14,7 +14,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @Controller
 public class DatingController {
     UserRepository ur = new UserRepository();
-    User userToDisplay;
 
     @GetMapping("/")
     public String index(){
@@ -36,7 +35,7 @@ public class DatingController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
-        System.out.println(user.getImagePath());
+        System.out.println(user.getImageName());
         if(user!=null){
             return "myProfile";
         } else{

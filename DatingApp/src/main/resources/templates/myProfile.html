@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-sm">
-            <img th:src="@{1Kokkehat.png}"/>
+            <img th:src="${user.imageName}"/>
             <form action="/upload" method="POST" enctype="multipart/form-data">
                 <input type="file" id="myFile" name="file">
                 <input type="submit" value="UPLOAD">
