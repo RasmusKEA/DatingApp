@@ -35,9 +35,9 @@
         </div>
 
         <div class="col-sm">
-            <form action="/action_page.php">
-                <input type="file" id="myFile" name="filename">
-                <input type="submit">
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" id="myFile" name="file">
+                <input type="submit" value="Submit">
             </form>
         </div>
     </div>
