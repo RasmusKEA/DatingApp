@@ -24,6 +24,13 @@ public class User {
         this.imageName = imageName;
     }
 
+    public User(int userid, String fullName, String bio, String imageName){
+        this.userid = userid;
+        this.fullName = fullName;
+        this.bio = bio;
+        this.imageName = imageName;
+    }
+
     public User(String fullName, String username, String password, String email) {
         this.fullName = fullName;
         this.username = username;

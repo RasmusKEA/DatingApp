@@ -35,7 +35,7 @@ public class DatingController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
-        System.out.println(user.getImageName());
+
         if(user!=null){
             return "myProfile";
         } else{
@@ -44,7 +44,12 @@ public class DatingController {
     }
 
     @GetMapping("/explore")
-    public String explore(){
+    public String explore(HttpServletRequest testRequest, Model model){
+        HttpSession testSession = testRequest.getSession();
+        User testUser = (User) testSession.getAttribute("testUser");
+        model.addAttribute("testUser", testUser);
+        System.out.println(testUser.getFullName());
+
         return "explore.html";
     }
 
@@ -55,7 +60,7 @@ public class DatingController {
 
 
     @PostMapping("/loginPost")
-    public String formPost(HttpServletRequest request, Model userModel){
+    public String formPost(HttpServletRequest request, Model userModel, HttpServletRequest testRequest){
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         User user = ur.login(email, password);
@@ -64,14 +69,16 @@ public class DatingController {
             return "redirect:/";
         }
 
+        User testUser = ur.findExploreUser();
+        HttpSession testSession = testRequest.getSession();
+        testSession.setAttribute("testUser", testUser);
+
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        ur.findMax();
-        //userToDisplay = ur.findUserByMail(email);
-
 
         return "redirect:/myProfile";
     }
+
 
     @PostMapping("/registerPost")
     public String registerPost(HttpServletRequest request, Model model){
@@ -102,6 +109,5 @@ public class DatingController {
         ur.saveUserBio(bio, user.getEmail());
         return "redirect:/myProfile";
     }
-
 
 }

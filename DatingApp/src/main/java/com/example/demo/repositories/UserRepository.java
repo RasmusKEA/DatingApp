@@ -11,8 +11,6 @@ public class UserRepository {
     private Connection establishConnection() throws SQLException {
         //Lav en forbindelse
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dating?serverTimezone=UTC", "user", "password");
-
-
         return conn;
     }
 
@@ -68,7 +66,7 @@ public class UserRepository {
         return false;
     }
 
-    public void findRandomUser(int maxID) {
+ /*   public void findRandomUser(int maxID) {
         Random r = new Random();
         int result = r.nextInt((maxID + 1) - 2) + 2;
         System.out.println("result: " + result);
@@ -87,7 +85,7 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public int findMax() {
         int maxID = 0;
@@ -101,8 +99,30 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        findRandomUser(maxID);
+        //findRandomUser(maxID);
         return maxID;
+    }
+
+    public User findExploreUser() {
+        User user = null;
+        int maxID = findMax();
+        Random r = new Random();
+        int result = r.nextInt((maxID + 1) - 2) + 2;
+        System.out.println("result: " + result);
+
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath FROM users where userid like ?;");
+            ps.setInt(1, result);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                rs.getString(1);
+                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                System.out.println(rs.getInt(1) + rs.getString(2) + rs.getString(3) + rs.getString(4));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public User findUserByMail(String email) {
