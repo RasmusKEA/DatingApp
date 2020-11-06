@@ -36,6 +36,10 @@ public class User {
         return bio;
     }
 
+    public String getBioBox(){
+        return bio;
+    }
+
     public void setBio(String bio) {
         this.bio = bio;
     }
