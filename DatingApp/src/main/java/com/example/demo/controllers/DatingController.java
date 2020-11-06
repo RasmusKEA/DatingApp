@@ -35,8 +35,8 @@ public class DatingController {
     public String myProfile(HttpServletRequest request, Model model){
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        model.addAttribute("userToDisplay", user);
-        System.out.println("Printing from myProfile "+ user.getBio());
+        model.addAttribute("user", user);
+        System.out.println(user.getImagePath());
         if(user!=null){
             return "myProfile";
         } else{
@@ -68,7 +68,7 @@ public class DatingController {
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
         ur.findMax();
-        userToDisplay = ur.findUserByMail(email);
+        //userToDisplay = ur.findUserByMail(email);
 
 
         return "redirect:/myProfile";

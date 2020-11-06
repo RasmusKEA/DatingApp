@@ -77,9 +77,11 @@ public class UserRepository {
             PreparedStatement ps = establishConnection().prepareStatement("SELECT fullname FROM users where userid like ?;");
             ps.setInt(1, result);
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            rs.getString(1);
-            System.out.println(rs.getString(1));
+            if(rs.next()){
+
+                rs.getString(1);
+                System.out.println(rs.getString(1));
+            }
 
 
         } catch (SQLException e) {
@@ -168,7 +170,7 @@ public class UserRepository {
         User user = null;
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, username, password, fullname, email, bio FROM users WHERE email like ?");
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, username, password, fullname, email, bio, imagepath FROM users WHERE email like ?");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -178,8 +180,10 @@ public class UserRepository {
             String dbFullName = rs.getString(4);
             String dbEmail = rs.getString(5);
             String dbBio = rs.getString(6);
+            String dbImagePath = rs.getString(7);
 
-            user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio);
+
+            user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio, dbImagePath);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -202,6 +206,25 @@ public class UserRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateImagePath(String imagePath, int userID){
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = establishConnection().prepareStatement("UPDATE users SET imagepath = ? WHERE (userid = ?)");
+
+            ps.setString(1, imagePath);
+            ps.setInt(2, userID);
+            ps.executeUpdate();
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
     }
 
 

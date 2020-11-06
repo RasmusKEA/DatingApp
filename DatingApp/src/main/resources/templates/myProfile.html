@@ -35,9 +35,10 @@
         </div>
 
         <div class="col-sm">
+            <img th:src="@{1Kokkehat.png}"/>
             <form action="/upload" method="POST" enctype="multipart/form-data">
                 <input type="file" id="myFile" name="file">
-                <input type="submit" value="Submit">
+                <input type="submit" value="UPLOAD">
             </form>
         </div>
     </div>
@@ -56,7 +57,7 @@
         <div class="col-sm">
             <div class="textarea">
                 <form action="/infoPost" method="post" id="bioForm">
-                    <textarea id="infoBox" name="bio" rows="10" cols="50" th:text="${userToDisplay.getBio()}" placeholder="Beskriv dig selv her..."></textarea>
+                    <textarea id="infoBox" name="bio" rows="10" cols="50" th:text="${user.getBio()}" placeholder="Beskriv dig selv her..."></textarea>
                     <input type="submit" value="Gem Description" class="submitDescription">
                 </form>
             </div>
