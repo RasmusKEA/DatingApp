@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.User;
+import com.example.demo.services.UserServices;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 
@@ -226,6 +227,61 @@ public class UserRepository {
 
 
     }
+
+    public boolean updatePassword(String oldPassword, String newPassword, String newPassword1, int userID){
+        UserServices us = new UserServices();
+        PreparedStatement ps = null;
+        try {
+            ps = establishConnection().prepareStatement("SELECT password FROM users where userid like ?");
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String oldDBPassword = rs.getString(1);
+
+            boolean test = us.verifyPasswordChange(oldPassword, oldDBPassword, newPassword, newPassword1);
+            if (test) {
+                ps = establishConnection().prepareStatement("UPDATE users SET password = ? WHERE (userid = ?)");
+                ps.setString(1, newPassword);
+                ps.setInt(2, userID);
+                ps.executeUpdate();
+                return true;
+            }
+
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public boolean updateEmail(String oldEmail, String newEmail, String newEmail1, int userID){
+        UserServices us = new UserServices();
+        PreparedStatement ps = null;
+        try {
+            ps = establishConnection().prepareStatement("SELECT email FROM users where userid like ?");
+
+            ps.setInt(1, userID);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String oldDBEmail = rs.getString(1);
+            us.verifyEmailChange(oldEmail, newEmail, newEmail1, oldDBEmail);
+
+            if (us.verifyEmailChange(oldEmail, oldDBEmail, newEmail, newEmail1) == true) {
+                ps = establishConnection().prepareStatement("UPDATE users SET email = ? WHERE (userid = ?)");
+                ps.setString(1, newEmail);
+                ps.setInt(2, userID);
+                ps.executeUpdate();
+                return true;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
 
 
 }
