@@ -60,7 +60,7 @@ public class DatingController {
 
 
     @PostMapping("/loginPost")
-    public String formPost(HttpServletRequest request, Model userModel, HttpServletRequest testRequest){
+    public String formPost(HttpServletRequest request, Model model){
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         User user = ur.login(email, password);
@@ -69,9 +69,7 @@ public class DatingController {
             return "redirect:/";
         }
 
-        User testUser = ur.findExploreUser();
-        HttpSession testSession = testRequest.getSession();
-        testSession.setAttribute("testUser", testUser);
+
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
@@ -139,5 +137,15 @@ public class DatingController {
         ur.updateEmail(oldEmail, newEmail, newEmail1,user.getUserid());
 
         return "redirect:/myProfile";
+    }
+
+    @PostMapping("/explorePost")
+    public String explorePost(HttpServletRequest testRequest, Model userModel){
+
+        User testUser = ur.findExploreUser();
+        HttpSession testSession = testRequest.getSession();
+        testSession.setAttribute("testUser", testUser);
+
+        return "redirect:/explore";
     }
 }

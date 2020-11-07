@@ -18,8 +18,13 @@
             <img class="logo" src="online-dating.png" alt="logo" style="width: 75px; height: 75px;">
         </div>
         <div class="col-sm">
-            <a href="/myProfile"><p class="myProfile-head1">MIN PROFIL</p></a>
-            <a href="/explore"><p class="myProfile-head">UDFORSK</p></a>
+            <form action="/myProfile" method="get">
+                <input type="submit" value="MIN PROFIL" class="myProfile-head1">
+            </form>
+
+            <form action="/explorePost" method="post">
+                <input type="submit" value="UDFORSK" class="myProfile-head">
+            </form>
         </div>
     </div>
 </div>
