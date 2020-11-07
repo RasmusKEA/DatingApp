@@ -9,30 +9,30 @@
 
 </head>
 <body>
-	<div class="container vr">
-    	<div class="row">
-      	  	<div class="col-sm">
-         	   <img class="logo" src="online-dating.png" alt="logo" style="width: 75px; height: 75px;">
-        	</div>
-        	<div class="col-sm">
-        		<a href="/myProfile"><p class="explore-head">MIN PROFIL</p></a>
-      			<a href="/explore"><p class="explore-head1">UDFORSK</p></a>
-    		</div>
-   	 	</div>
+<div class="container vr">
+	<div class="row">
+		<div class="col-sm">
+			<img class="logo" src="online-dating.png" alt="logo" style="width: 75px; height: 75px;">
+		</div>
+		<div class="col-sm">
+			<a href="/myProfile"><p class="explore-head">MIN PROFIL</p></a>
+			<a href="/explore"><p class="explore-head1">UDFORSK</p></a>
+		</div>
 	</div>
+</div>
 <div class="candidate-view">
-  	<img th:src="@{${testUser.imageName}}" width="200" height="200"/>
+	<img th:src="@{${testUser.imageName}}" width="200" height="200"/>
 	<p class="testing" th:text="@{${testUser.fullName}}"></p>
 	<p th:text="@{${testUser.bio}}"></p>
 </div>
 
 <div>
-  <input type="image" id="imageNo" alt="No" src="negative.png" class="negative-img">
-  <input type="image" id="imageYes" alt="Yes" src="plus.png" class="plus-img">
+	<input type="image" id="imageNo" alt="No" src="negative.png" class="negative-img">
+	<input type="image" id="imageYes" alt="Yes" src="plus.png" class="plus-img">
 </div>
 
 <div>
-  <a href="/candidateList"><p class="candidateList">SE KANDIDATLISTE</p></a>
+	<a href="/candidateList"><p class="candidateList">SE KANDIDATLISTE</p></a>
 </div>
 
 
