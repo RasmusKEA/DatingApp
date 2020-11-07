@@ -248,6 +248,29 @@
     margin-left: 175px;
 }
 
+.fileUpload{
+    color: white;
+    border-radius: 100px;
+    background: #FA6980;
+    border: #FA6980;
+    width: 140px;
+    height: 40px;
+    margin-top: 15px;
+    margin-left: 175px;
+}
+
+.choose::-webkit-file-upload-button {
+    color: white;
+    border-radius: 100px;
+    background: #FA6980;
+    border: #FA6980;
+    width: 140px;
+    height: 40px;
+    margin-top: 15px;
+    margin-left: 175px;
+    cursor: pointer ;
+}
+
 .billedeUpload {
     width: 100px;
     height: 30px;
@@ -264,6 +287,15 @@
 
 .testing{
     font-size: 50px;
+}
+
+.myprofile-pb{
+    width: 250px;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 50%;
 }
 
 

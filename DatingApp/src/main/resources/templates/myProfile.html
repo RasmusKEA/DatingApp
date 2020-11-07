@@ -35,10 +35,10 @@
         </div>
 
         <div class="col-sm">
-            <img th:src="@{${user.imageName}}"/>
+            <img class="myprofile-pb" th:src="@{${user.imageName}}"/>
             <form action="/upload" method="POST" enctype="multipart/form-data">
-                <input type="file" id="myFile" name="file">
-                <input type="submit" value="UPLOAD">
+                <input type="file" id="myFile" name="file" class="choose" value="VÆLG FIL" title=" ">
+                <input type="submit" value="UPLOAD" class="fileUpload">
             </form>
         </div>
     </div>
@@ -51,14 +51,14 @@
                 <input type="email" class="oldEmail" id="oldEmail" name="oldEmail" placeholder="Gammel email" required>
                 <input type="email" class="newEmail" id="newEmail" name="newEmail" placeholder="Ny email" required>
                 <input type="email" class="newEmail" id="newEmail1" name="newEmail1" placeholder="Ny email" required>
-                <input type="submit" value="Gem Email" class="submitEmail">
+                <input type="submit" value="GEM EMAIL" class="submitEmail">
             </form>
         </div>
         <div class="col-sm">
             <div class="textarea">
                 <form action="/infoPost" method="post" id="bioForm">
                     <textarea id="infoBox" name="bio" rows="10" cols="50" th:text="${user.getBio()}" placeholder="Beskriv dig selv her..."></textarea>
-                    <input type="submit" value="Gem Description" class="submitDescription">
+                    <input type="submit" value="GEM BESKRIVELSE" class="submitDescription">
                 </form>
             </div>
         </div>
