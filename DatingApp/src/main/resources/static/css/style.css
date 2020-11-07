@@ -319,3 +319,43 @@
 
 
 
+.explore-align{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.explore-image{
+    border-radius: 50%;
+    height: 300px;
+    width: 300px;
+}
+
+.explore-name{
+    font-size: 22px;
+}
+.explore-bio{
+    font-size: 14px;
+}
+
+.explore-negative{
+    height: 50px;
+    width: 50px;
+
+
+}
+
+.explore-plus{
+    height: 50px;
+    width: 50px;
+
+
+}
+
+.explore-buttonrow{
+
+    display: flex;
+
+}
+.test{
+    text-align: center;
+}

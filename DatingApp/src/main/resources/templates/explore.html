@@ -25,22 +25,30 @@
 		</div>
 	</div>
 </div>
-<div class="candidate-view">
-	<img th:src="@{${testUser.imageName}}"  class="candidate-pb"/>
-	<p class="testing" th:text="@{${testUser.fullName}}"></p>
-	<p th:text="@{${testUser.bio}}"></p>
+<div class="explore-align">
+	<div class="candidate-view">
+	<img th:src="@{${testUser.imageName}}" class="explore-image"/>
+	<p th:text="@{${testUser.fullName}}" class="explore-name"></p>
+	<p th:text="@{${testUser.bio}}" class="explore-bio"></p>
+
+
+	<div class="explorebutton">
+		<div class="explore-buttonrow">
+			<p class="test"> <form action="/notAddPost" method="post">
+			<input type="image" id="imageNo" alt="No" src="negative.png" class="explore-negative">
+		</form>
+			</p>
+		<p class="test"><form action="/addToCandidate" method="post">
+			<input type="image" id="imageYes" alt="Yes" src="plus.png" class="explore-plus">
+		</form>
+			</p>
+
+		</div>
+	</div>
+	</div>
+
 </div>
 
-<div>
-	<form action="/addToCandidate" method="post">
-		<input type="image" id="imageYes" alt="Yes" src="plus.png" class="plus-img">
-	</form>
-	<form action="/notAddPost" method="post">
-		<input type="image" id="imageNo" alt="No" src="negative.png" class="negative-img">
-	</form>
-
-
-</div>
 
 <div>
 	<a href="/candidateList"><p class="candidateList">SE KANDIDATLISTE</p></a>
