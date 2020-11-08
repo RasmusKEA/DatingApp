@@ -13,6 +13,10 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 @Controller
 public class DatingController {
+    //testUser = candidate user
+    //user = logged in user
+
+
     UserRepository ur = new UserRepository();
 
     @GetMapping("/")
@@ -68,8 +72,6 @@ public class DatingController {
         if(user == null){
             return "redirect:/";
         }
-
-
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
@@ -148,4 +150,31 @@ public class DatingController {
 
         return "redirect:/explore";
     }
+
+    @PostMapping("/notAddPost")
+    public String notAddPost(HttpServletRequest testRequest, Model userModel){
+        User testUser = ur.findExploreUser();
+        HttpSession testSession = testRequest.getSession();
+        testSession.setAttribute("testUser", testUser);
+
+        return "redirect:/explore";
+    }
+
+    @PostMapping("/addToCandidate")
+    public String addToCandidate(HttpServletRequest testRequest, Model model, HttpServletRequest request){
+        HttpSession testSession = testRequest.getSession();
+        User testUser = (User) testSession.getAttribute("testUser");
+        model.addAttribute("testUser", testUser);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        ur.addToCandidateList(user.getUserid(), testUser.getUserid());
+
+
+
+        return "redirect:/explore";
+    }
+
+
+
 }

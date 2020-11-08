@@ -5,6 +5,7 @@ import com.example.demo.services.UserServices;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.Random;
 
@@ -28,6 +29,17 @@ public class UserRepository {
             ps.setString(4, email);
             user = new User(name, username, password, email);
             ps.executeUpdate();
+
+            PreparedStatement ps1 = establishConnection().prepareStatement("SELECT userid FROM users where email = ?");
+            ps1.setString(1, email);
+            ResultSet rs = ps1.executeQuery();
+            rs.next();
+            int ownerid = rs.getInt(1);
+            createCandidateList(ownerid);
+
+
+
+
             System.out.println("Din konto er nu blevet oprettet");
         } catch (SQLException e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
@@ -39,54 +51,18 @@ public class UserRepository {
         return user;
 
         //TODO Sørg for der ikke kan være flere med samme email og username
-
-
     }
 
-    public boolean verifyUserLogin(String email, String password) {
+    public void createCandidateList(int ownerid){
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT email, password FROM users WHERE email like ? AND password like ?");
-            ps.setString(1, email);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            String dbEmail = rs.getString(1);
-            String dbPword = rs.getString(2);
-
-            if (email.equals(dbEmail) && password.equals(dbPword)) {
-                System.out.println("Korrekt login, velkommen");
-                return true;
-            } else {
-                System.out.println("Username eller password er ikke korrekt");
-                return false;
-            }
-
+            PreparedStatement ps = establishConnection().prepareStatement("INSERT INTO candidatelist (ownerid) VALUES (?)");
+            ps.setInt(1, ownerid);
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
- /*   public void findRandomUser(int maxID) {
-        Random r = new Random();
-        int result = r.nextInt((maxID + 1) - 2) + 2;
-        System.out.println("result: " + result);
-
-        try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT fullname FROM users where userid like ?;");
-            ps.setInt(1, result);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-
-                rs.getString(1);
-                System.out.println(rs.getString(1));
-            }
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public int findMax() {
         int maxID = 0;
@@ -100,7 +76,6 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //findRandomUser(maxID);
         return maxID;
     }
 
@@ -120,24 +95,6 @@ public class UserRepository {
                 user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
                 System.out.println(rs.getInt(1) + rs.getString(2) + rs.getString(3) + rs.getString(4));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    public User findUserByMail(String email) {
-        PreparedStatement ps = null;
-        User user = null;
-        try {
-            ps = establishConnection().prepareStatement("SELECT email, username, fullname FROM users WHERE email like ?");
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            String dbEmail = rs.getString(1);
-            String dbUsername = rs.getString(3);
-            String dbFullName = rs.getString(3);
-            user = new User(dbFullName, dbUsername, dbEmail);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -184,7 +141,6 @@ public class UserRepository {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
 
     public User fullUserObject(String email) {
@@ -212,22 +168,6 @@ public class UserRepository {
         return user;
     }
 
-    public String getBio(String email) {
-        try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT bio FROM users where email like ?");
-            ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            String bio = rs.getString(1);
-            System.out.println(rs.getString(1));
-            return bio;
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public void updateImagePath(String imagePath, int userID){
 
@@ -267,8 +207,6 @@ public class UserRepository {
                 return true;
             }
 
-
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -300,6 +238,38 @@ public class UserRepository {
             throwables.printStackTrace();
         }
         return false;
+    }
+
+    public void addToCandidateList(int ownerid, int candidateid){
+
+        String candID = String.valueOf(candidateid);
+
+        try {
+
+            PreparedStatement ps1 = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+            ps1.setInt(1, ownerid);
+            ResultSet rs = ps1.executeQuery();
+            rs.next();
+            String candidates = rs.getString(1);
+            System.out.println(candidates);
+
+            PreparedStatement ps = establishConnection().prepareStatement("UPDATE candidatelist SET usersInList = ? WHERE (ownerid = ?)");
+            if(candidates == null || candidates.isEmpty() || candidates.length() == 0){
+
+                ps.setString(1, candID);
+                ps.setInt(2, ownerid);
+                ps.executeUpdate();
+            }else{
+                candID = candID + ", " + candidates;
+                ps.setString(1, candID);
+                ps.setInt(2, ownerid);
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
