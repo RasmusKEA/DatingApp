@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Candidate;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 
 @Controller
 public class DatingController {
@@ -58,7 +60,11 @@ public class DatingController {
     }
 
     @GetMapping("/candidateList")
-    public String candidateList(){
+    public String candidateList(HttpServletRequest candReq, Model model){
+        HttpSession candSession = candReq.getSession();
+        ArrayList<Candidate> candList = (ArrayList<Candidate>) candSession.getAttribute("candList");
+        model.addAttribute("candList", candList);
+        System.out.println("getmapping print: " + candList);
         return "candidateList.html";
     }
 
@@ -174,11 +180,17 @@ public class DatingController {
     }
 
     @PostMapping("/showCandidateList")
-    public String showCandidateList(HttpServletRequest request, Model model){
+    public String showCandidateList(HttpServletRequest request, Model model, HttpServletRequest candReq){
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        ur.listOfCandidates(user.getUserid());
+        ArrayList<Candidate> candList = ur.listOfCandidates(user.getUserid());
+
+        HttpSession candSession = candReq.getSession();
+        candSession.setAttribute("candList", candList);
+       // model.addAttribute("candList", candList);
+
+        //TODO lav en model som viser kandidatlisten så thymeleaf virker
 
         return "redirect:/candidateList";
     }

@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.models.Candidate;
 import com.example.demo.models.User;
 import com.example.demo.services.UserServices;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
@@ -273,8 +274,8 @@ public class UserRepository {
 
     }
 
-    public ArrayList<User> listOfCandidates(int ownerid){
-        ArrayList<User> listOfCandidates = new ArrayList<>();
+    public ArrayList<Candidate> listOfCandidates(int ownerid){
+        ArrayList<Candidate> listOfCandidates = new ArrayList<>();
         PreparedStatement ps = null;
         try {
             ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
@@ -289,7 +290,7 @@ public class UserRepository {
 
             for (int i = 0; i < arr.length; i++) {
                 System.out.println(arr);
-                User user = fullUserObjectByID(arr[i]);
+                Candidate user = fullUserObjectByID(arr[i]);
                 listOfCandidates.add(user);
                 System.out.println(user.getFullName());
 
@@ -300,24 +301,22 @@ public class UserRepository {
         return listOfCandidates;
     }
 
-    public User fullUserObjectByID(String userid) {
-        User user = null;
+    public Candidate fullUserObjectByID(String userid) {
+        Candidate user = null;
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, username, password, fullname, email, bio, imagepath FROM users WHERE userid like ?");
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, imagepath, bio FROM users WHERE userid like ?");
             ps.setString(1, userid);
             ResultSet rs = ps.executeQuery();
             rs.next();
             int dbUserID = rs.getInt(1);
-            String dbUsername = rs.getString(2);
-            String dbPassword = rs.getString(3);
-            String dbFullName = rs.getString(4);
-            String dbEmail = rs.getString(5);
-            String dbBio = rs.getString(6);
-            String dbImagePath = rs.getString(7);
+            String dbFullName = rs.getString(2);
+            String dbImagePath = rs.getString(3);
+            String dbBio = rs.getString(4);
 
 
-            user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio, dbImagePath);
+
+            user = new Candidate(dbUserID, dbFullName, dbImagePath, dbBio);
         } catch (SQLException e) {
             e.printStackTrace();
         }

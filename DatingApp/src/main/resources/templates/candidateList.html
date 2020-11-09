@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 <head>
 	<title>KANDIDATLISTE</title>
 	<link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet">
@@ -18,6 +19,27 @@
 		</div>
 	</div>
 </div>
+
+<table>
+	<thead>
+	<tr>
+		<th>  </th>
+		<th> Navn </th>
+		<th> Biografi </th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr th:if="${candList.empty}">
+		<td colspan="2"> No Books Available </td>
+	</tr>
+	<tr th:each="candidate : ${candList}">
+		<td><img class="candList-pb" th:src="@{${candidate.imagePath}}"/></td>
+		<td><span th:text="${candidate.fullName}"> Navn </span></td>
+		<td><span th:text="${candidate.bio}"> Biografi </span></td>
+	</tr>
+	</tbody>
+</table>
+
 
 </body>
 </html>
