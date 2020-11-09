@@ -18,6 +18,10 @@ public class DatingController {
     //testUser = candidate user
     //user = logged in user
 
+    //TODO Giv roller til alle der opretter sig + de som der er i DB i forvejen. (0 = admin, 1 = user, 2 = blacklisted)
+    //TODO Lav HTML og CSS for admin view + messages. (find smartest måde at sende beskeder)
+    //TODO Fix exceptions f.eks. ved forkert login. - lav pop up med fejlbesked
+
 
     UserRepository ur = new UserRepository();
 
@@ -201,7 +205,6 @@ public class DatingController {
         HttpSession candSession = candReq.getSession();
         candSession.setAttribute("candList", candList);
 
-        //TODO lav en model som viser kandidatlisten så thymeleaf virker
 
         return "redirect:/candidateList";
     }
