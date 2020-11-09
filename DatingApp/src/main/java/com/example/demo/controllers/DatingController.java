@@ -151,22 +151,22 @@ public class DatingController {
     public String explorePost(HttpServletRequest testRequest, HttpServletRequest request){
 
         User testUser = ur.findExploreUser();
-
-
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
         boolean sameUser = true;
-
+        boolean userInCandList = ur.isInCandList(user.getUserid(), testUser.getUserid());
         while(sameUser){
-
-            if(testUser.getUserid() != user.getUserid()){
-                sameUser = false;
-                break;
+            if(testUser.getUserid() != user.getUserid()) {
+                if (!ur.isInCandList(user.getUserid(), testUser.getUserid())) {
+                    break;
+                }
             }
             testUser = ur.findExploreUser();
             sameUser = true;
         }
+
+
 
         HttpSession testSession = testRequest.getSession();
         testSession.setAttribute("testUser", testUser);

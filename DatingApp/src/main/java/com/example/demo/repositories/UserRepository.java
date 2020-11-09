@@ -324,6 +324,29 @@ public class UserRepository {
         return user;
     }
 
+    public boolean isInCandList(int ownerid, int candid){
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+            ps.setInt(1, ownerid);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String usersInList = rs.getString(1);
+            String[] arr = usersInList.split(", ");
+
+            String candID = String.valueOf(candid);
+            for (int i = 0; i < arr.length; i++) {
+                if(arr[i].equals(candID)){
+                    System.out.println("is in cand list: " + arr[i].equals(candID));
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 
 }
