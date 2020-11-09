@@ -155,7 +155,6 @@ public class DatingController {
         User user = (User) session.getAttribute("user");
 
         boolean sameUser = true;
-        boolean userInCandList = ur.isInCandList(user.getUserid(), testUser.getUserid());
         while(sameUser){
             if(testUser.getUserid() != user.getUserid()) {
                 if (!ur.isInCandList(user.getUserid(), testUser.getUserid())) {

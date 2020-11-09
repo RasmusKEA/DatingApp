@@ -6,8 +6,6 @@
 	<link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 	<link href="/css/style.css" type="text/css" rel="stylesheet"/>
-
-
 </head>
 <body>
 <div class="container vr">
@@ -28,24 +26,27 @@
 </div>
 <div class="explore-align">
 	<div class="candidate-view">
-	<img th:src="@{${testUser.imageName}}" class="explore-image"/>
-	<p th:text="@{${testUser.fullName}}" class="explore-name"></p>
-	<p th:text="@{${testUser.bio}}" class="explore-bio"></p>
+		<img th:src="@{${testUser.imageName}}" class="explore-image"/>
+		<p th:text="@{${testUser.fullName}}" class="explore-name"></p>
+		<p th:text="@{${testUser.bio}}" class="explore-bio"></p>
 
 
-	<div class="explorebutton">
-		<div class="explore-buttonrow">
-			<p class="test"> <form action="/notAddPost" method="post">
-			<input type="image" id="imageNo" alt="No" src="negative.png" class="explore-negative">
-		</form>
-			</p>
-		<p class="test"><form action="/addToCandidate" method="post">
-			<input type="image" id="imageYes" alt="Yes" src="plus.png" class="explore-plus">
-		</form>
-			</p>
 
-		</div>
-	</div>
+			<div class="explore-buttonrow">
+				<div class="noButton">
+					<form action="/notAddPost" method="post">
+						<input type="image" id="imageNo" alt="No" src="negative.png" class="explore-negative">
+					</form>
+				</div>
+
+				<div class="yesButton">
+					<form action="/addToCandidate" method="post">
+						<input type="image" id="imageYes" alt="Yes" src="plus.png" class="explore-plus">
+					</form>
+				</div>
+
+
+			</div>
 	</div>
 </div>
 

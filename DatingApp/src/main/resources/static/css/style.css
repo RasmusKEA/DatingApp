@@ -172,6 +172,32 @@
     opacity: 50%;
 }
 
+.cand-head{
+    background: none;
+    text-decoration: none;
+    margin-top: 20px;
+    float: right;
+    font-size: 24px;
+    color: #343638;
+    margin-right: 20px;
+    padding: 0;
+    border: none;
+    opacity: 50%;
+}
+
+.cand-head1{
+    background: none;
+    text-decoration: none;
+    margin-top: 20px;
+    float: right;
+    font-size: 24px;
+    color: #343638;
+    margin-right: 20px;
+    padding: 0;
+    border: none;
+    opacity: 50%;
+}
+
 
 .candidate-view{
     position: absolute;
@@ -359,9 +385,20 @@
 }
 
 .explore-buttonrow{
+    display: block;
+    text-align: center;
+}
+.noButton{
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 25px;
+}
 
-    display: flex;
 
+.yesButton{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 25px;
 }
 .test{
     text-align: center;
