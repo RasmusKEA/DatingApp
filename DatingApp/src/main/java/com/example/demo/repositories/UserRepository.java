@@ -285,16 +285,20 @@ public class UserRepository {
             rs.next();
             String candidates = rs.getString(1);
 
-            String[] arr = candidates.split(", ");
+            if(candidates != null){
+                String[] arr = candidates.split(", ");
+                for (int i = 0; i < arr.length; i++) {
+                    System.out.println(arr);
+                    Candidate user = fullUserObjectByID(arr[i]);
+                    listOfCandidates.add(user);
+                    System.out.println(user.getFullName());
 
-
-            for (int i = 0; i < arr.length; i++) {
-                System.out.println(arr);
-                Candidate user = fullUserObjectByID(arr[i]);
-                listOfCandidates.add(user);
-                System.out.println(user.getFullName());
-
+                }
             }
+
+
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -332,15 +336,22 @@ public class UserRepository {
             ResultSet rs = ps.executeQuery();
             rs.next();
             String usersInList = rs.getString(1);
-            String[] arr = usersInList.split(", ");
 
-            String candID = String.valueOf(candid);
-            for (int i = 0; i < arr.length; i++) {
-                if(arr[i].equals(candID)){
-                    System.out.println("is in cand list: " + arr[i].equals(candID));
-                    return true;
+            if(usersInList != null){
+                String[] arr = usersInList.split(", ");
+
+                String candID = String.valueOf(candid);
+                for (int i = 0; i < arr.length; i++) {
+                    if(arr[i].equals(candID)){
+                        System.out.println("is in cand list: " + arr[i].equals(candID));
+                        return true;
+                    }
                 }
             }
+
+
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

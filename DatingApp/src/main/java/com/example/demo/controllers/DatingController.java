@@ -104,7 +104,7 @@ public class DatingController {
     }
 
     @PostMapping("/infoPost")
-    public String myProfileBio(HttpServletRequest request, Model model){
+    public String myProfileBio(HttpServletRequest request){
         String bio = request.getParameter("bio");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -117,7 +117,7 @@ public class DatingController {
     }
 
     @PostMapping("/PasswordPost")
-    public String changePassword(HttpServletRequest request, Model model){
+    public String changePassword(HttpServletRequest request){
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String newPassword1 = request.getParameter("newPassword1");
@@ -204,6 +204,19 @@ public class DatingController {
         //TODO lav en model som viser kandidatlisten så thymeleaf virker
 
         return "redirect:/candidateList";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request){
+
+
+        HttpSession requestSession = request.getSession(false);
+
+        if(requestSession != null){
+            requestSession.invalidate();
+        }
+
+        return "redirect:/";
     }
 
 
