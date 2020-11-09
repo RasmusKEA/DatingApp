@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfig
 
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class UserRepository {
@@ -270,6 +271,58 @@ public class UserRepository {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<User> listOfCandidates(int ownerid){
+        ArrayList<User> listOfCandidates = new ArrayList<>();
+        PreparedStatement ps = null;
+        try {
+            ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+            ps.setInt(1, ownerid);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String candidates = rs.getString(1);
+
+            String[] arr = candidates.split(", ");
+
+
+            for (int i = 0; i < arr.length; i++) {
+                System.out.println(arr);
+                User user = fullUserObjectByID(arr[i]);
+                listOfCandidates.add(user);
+                System.out.println(user.getFullName());
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listOfCandidates;
+    }
+
+    public User fullUserObjectByID(String userid) {
+        User user = null;
+
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, username, password, fullname, email, bio, imagepath FROM users WHERE userid like ?");
+            ps.setString(1, userid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            int dbUserID = rs.getInt(1);
+            String dbUsername = rs.getString(2);
+            String dbPassword = rs.getString(3);
+            String dbFullName = rs.getString(4);
+            String dbEmail = rs.getString(5);
+            String dbBio = rs.getString(6);
+            String dbImagePath = rs.getString(7);
+
+
+            user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio, dbImagePath);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
 

@@ -170,11 +170,18 @@ public class DatingController {
 
         ur.addToCandidateList(user.getUserid(), testUser.getUserid());
 
-
-
         return "redirect:/explore";
     }
 
+    @PostMapping("/showCandidateList")
+    public String showCandidateList(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        ur.listOfCandidates(user.getUserid());
+
+        return "redirect:/candidateList";
+    }
 
 
 }
