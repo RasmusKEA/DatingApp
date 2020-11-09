@@ -21,6 +21,7 @@ public class DatingController {
     //TODO Giv roller til alle der opretter sig + de som der er i DB i forvejen. (0 = admin, 1 = user, 2 = blacklisted)
     //TODO Lav HTML og CSS for admin view + messages. (find smartest måde at sende beskeder)
     //TODO Fix exceptions f.eks. ved forkert login. - lav pop up med fejlbesked
+    //TODO Få gjort candidateList pæn
 
 
     UserRepository ur = new UserRepository();
