@@ -1,3 +1,7 @@
+* {
+    font-family: 'Share Tech', sans-serif;
+}
+
 .loginButton{
     float: right;
     border-radius: 100px;
