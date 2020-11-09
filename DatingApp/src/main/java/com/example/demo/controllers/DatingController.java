@@ -70,7 +70,7 @@ public class DatingController {
 
 
     @PostMapping("/loginPost")
-    public String formPost(HttpServletRequest request, Model model){
+    public String formPost(HttpServletRequest request){
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         User user = ur.login(email, password);
@@ -87,7 +87,7 @@ public class DatingController {
 
 
     @PostMapping("/registerPost")
-    public String registerPost(HttpServletRequest request, Model model){
+    public String registerPost(HttpServletRequest request){
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String username = request.getParameter("username");
@@ -133,7 +133,7 @@ public class DatingController {
 
 
     @PostMapping("/EmailPost")
-    public String changeEmail(HttpServletRequest request, Model model){
+    public String changeEmail(HttpServletRequest request){
         String oldEmail = request.getParameter("oldEmail");
         String newEmail = request.getParameter("newEmail");
         String newEmail1 = request.getParameter("newEmail1");
@@ -148,9 +148,26 @@ public class DatingController {
     }
 
     @PostMapping("/explorePost")
-    public String explorePost(HttpServletRequest testRequest, Model userModel){
+    public String explorePost(HttpServletRequest testRequest, HttpServletRequest request){
 
         User testUser = ur.findExploreUser();
+
+
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        boolean sameUser = true;
+
+        while(sameUser){
+
+            if(testUser.getUserid() != user.getUserid()){
+                sameUser = false;
+                break;
+            }
+            testUser = ur.findExploreUser();
+            sameUser = true;
+        }
+
         HttpSession testSession = testRequest.getSession();
         testSession.setAttribute("testUser", testUser);
 
@@ -158,12 +175,8 @@ public class DatingController {
     }
 
     @PostMapping("/notAddPost")
-    public String notAddPost(HttpServletRequest testRequest, Model userModel){
-        User testUser = ur.findExploreUser();
-        HttpSession testSession = testRequest.getSession();
-        testSession.setAttribute("testUser", testUser);
-
-        return "redirect:/explore";
+    public String notAddPost(HttpServletRequest testRequest, HttpServletRequest request){
+        return explorePost(testRequest, request);
     }
 
     @PostMapping("/addToCandidate")
@@ -176,11 +189,11 @@ public class DatingController {
 
         ur.addToCandidateList(user.getUserid(), testUser.getUserid());
 
-        return "redirect:/explore";
+        return explorePost(testRequest, request);
     }
 
     @PostMapping("/showCandidateList")
-    public String showCandidateList(HttpServletRequest request, Model model, HttpServletRequest candReq){
+    public String showCandidateList(HttpServletRequest request, HttpServletRequest candReq){
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
@@ -188,7 +201,6 @@ public class DatingController {
 
         HttpSession candSession = candReq.getSession();
         candSession.setAttribute("candList", candList);
-       // model.addAttribute("candList", candList);
 
         //TODO lav en model som viser kandidatlisten så thymeleaf virker
 
