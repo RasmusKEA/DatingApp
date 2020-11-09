@@ -136,6 +136,18 @@
     border: none;
     opacity: 50%;
 }
+.myProfile-head2{
+    background: none;
+    text-decoration: none;
+    margin-top: 20px;
+    float: right;
+    font-size: 24px;
+    color: #343638;
+    margin-right: 20px;
+    padding: 0;
+    border: none;
+    opacity: 50%;
+}
 
 .myProfile-head1{
     background: none;
@@ -147,6 +159,19 @@
     padding: 0;
     border: none;
 }
+.explore-head2{
+    background: none;
+    text-decoration: none;
+    margin-top: 20px;
+    margin-right: 20px;
+    float: right;
+    font-size: 24px;
+    color: #343638;
+    padding: 0;
+    border: none;
+    opacity: 50%;
+}
+
 
 .explore-head1{
     background: none;
@@ -171,6 +196,47 @@
     border: none;
     opacity: 50%;
 }
+
+
+.messages-head{
+    background: none;
+    text-decoration: none;
+    margin-top: 20px;
+    float: right;
+    font-size: 24px;
+    color: #343638;
+    margin-right: 20px;
+    padding: 0;
+    border: none;
+    opacity: 50%;
+}
+
+.messages-head1{
+    background: none;
+    text-decoration: none;
+    margin-top: 20px;
+    float: right;
+    font-size: 24px;
+    color: #343638;
+    margin-right: 20px;
+    padding: 0;
+    border: none;
+    opacity: 50%;
+}
+
+.messages-head2{
+  
+    background: none;
+    text-decoration: none;
+    margin-top: 20px;
+    float: right;
+    font-size: 24px;
+    margin-right: 20px;
+    color: #343638;
+    padding: 0;
+    border: none;
+}
+
 
 .cand-head{
     background: none;
@@ -294,6 +360,7 @@
     margin-left: 175px;
 }
 
+
 .fileUpload{
     color: white;
     border-radius: 100px;
@@ -412,4 +479,40 @@
     margin-right: auto;
     display: block;
     border-radius: 50%;
+}
+
+
+.submitMessage{
+    color: white;
+    border-radius: 100px;
+    background: #FA6980;
+    border: #FA6980;
+    width: 140px;
+    height: 40px;
+    margin-top: 15px;
+   
+}
+.messageMenu{
+    width: 500px;
+    height: 250px;
+    overflow-y: scroll;
+    text-align: left;
+    margin-left: 100px;
+
+}
+.messageMenu a {
+  background-color: #eee; 
+  color: black; 
+  display: block; 
+  padding: 12px; 
+  text-decoration: none;
+}
+
+.messageMenu a:hover {
+  background-color: #ccc;
+}
+
+.messageMenu a.active {
+  background-color: #4CAF50;
+  color: white;
 }

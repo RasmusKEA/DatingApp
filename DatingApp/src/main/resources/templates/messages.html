@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html>
+<head>
+	<title>MESSAGES</title>
+	<link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="/css/style.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container vr">
+	<div class="row">
+		<div class="col-sm">
+			<form action="/logout" method="post">
+				<input type="image" id="logo" alt="logo" src="online-dating.png" class="logo" style="width: 75px; height: 75px;">
+			</form>
+		</div>
+		<div class="col-sm">
+
+			<form action="/myProfile" method="get">
+				<input type="submit" value="MIN PROFIL" class="messages-head">
+			</form>
+
+			<form action="/explorePost" method="post">
+				<input type="submit" value="UDFORSK" class="messages-head1">
+			</form>
+			<form action="/myMessages" method="get">
+				<input type="submit" value="MINE BESKEDER" class="messages-head2">
+			</form>
+
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="col-sm">
+		
+
+<p> Vælg hvem du gerne vil sende en besked </p>
+<form action="/action_page.php">
+	<label for= "Vælg modtager"> </label>	
+	<select> name="modtager" id="modtager" 
+		<option>Markus</option>
+	</select>
+	<br><br>
+</form>
+
+<div class="container">
+	<div class="row">
+<div class="textarea">
+	<form action="/messagePost" method="post" id="messeageText">
+		<textarea id="messageField" name="message" rows="10" cols="50" placeholder="Skriv din besked her"></textarea>
+	</form>
+	<input type="submit" value="Send Besked" class="submitMessage"> 
+	</div>
+	
+
+
+
+<div class="messageMenu">
+	<a href="#">Besked 1</a>
+	<a href="#">Besked 2</a>
+	<a href="#">Besked 3</a>
+	<a href="#">Besked 1</a>
+	<a href="#">Besked 2</a>
+	<a href="#">Besked 3</a>
+	<a href="#">Besked 1</a>
+	<a href="#">Besked 2</a>
+	<a href="#">Besked 3</a>
+	</div>
+</div>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>

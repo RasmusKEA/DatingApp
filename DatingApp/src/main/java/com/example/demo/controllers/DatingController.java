@@ -224,5 +224,8 @@ public class DatingController {
         return "redirect:/";
     }
 
-
+    @GetMapping("/myMessages")
+    public String myMessages(){
+        return "messages.html";
+    }
 }
