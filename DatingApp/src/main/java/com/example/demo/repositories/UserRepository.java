@@ -348,17 +348,34 @@ public class UserRepository {
                     }
                 }
             }
-
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
+    public boolean isCandListFull(int ownerid){
+        int maxID = findMax();
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+            ps.setInt(1, ownerid);
 
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String usersInList = rs.getString(1);
+            System.out.println("usersinlist string: " + usersInList);
+
+            if(usersInList != null){
+                String[] arr = usersInList.split(", ");
+                if(arr.length-2 == maxID || arr.length-1 == maxID){
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
 

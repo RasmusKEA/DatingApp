@@ -22,6 +22,7 @@ public class DatingController {
     //TODO Lav HTML og CSS for admin view + messages. (find smartest måde at sende beskeder)
     //TODO Fix exceptions f.eks. ved forkert login. - lav pop up med fejlbesked
     //TODO Få gjort candidateList pæn
+    //TODO Fix crash ved fuld candList
 
 
     UserRepository ur = new UserRepository();
@@ -155,21 +156,21 @@ public class DatingController {
     @PostMapping("/explorePost")
     public String explorePost(HttpServletRequest testRequest, HttpServletRequest request){
 
-        User testUser = ur.findExploreUser();
+        User testUser = null;
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        boolean sameUser = true;
-        while(sameUser){
-            if(testUser.getUserid() != user.getUserid()) {
-                if (!ur.isInCandList(user.getUserid(), testUser.getUserid())) {
-                    break;
+        while(true){
+            if(!ur.isCandListFull(user.getUserid())){
+                testUser = ur.findExploreUser();
+                if(testUser.getUserid() != user.getUserid() && !ur.isCandListFull(user.getUserid())) {
+                    if (!ur.isInCandList(user.getUserid(), testUser.getUserid()) && !ur.isCandListFull(user.getUserid())) {
+                        break;
+                    }
                 }
             }
-            testUser = ur.findExploreUser();
-            sameUser = true;
+            ur.findExploreUser();
         }
-
 
 
         HttpSession testSession = testRequest.getSession();
