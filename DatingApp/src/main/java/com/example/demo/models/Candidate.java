@@ -4,7 +4,7 @@ public class Candidate {
     private String fullName, imagePath, bio;
     private int userid;
 
-    public Candidate(int userid, String fullName, String imagePath, String bio) {
+    public Candidate(int userid, String fullName, String bio, String imagePath) {
         this.userid = userid;
         this.fullName = fullName;
         this.imagePath = imagePath;
