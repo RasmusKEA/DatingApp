@@ -24,7 +24,7 @@ public class UserRepository {
 
         PreparedStatement ps = null;
         try {
-            ps = establishConnection().prepareStatement("INSERT INTO users (username, password, fullname, email) VALUES (?, ?, ?, ?)");
+            ps = establishConnection().prepareStatement("INSERT INTO users (username, password, fullname, email, usergroup) VALUES (?, ?, ?, ?, 1)");
             ps.setString(1, username);
             ps.setString(2, password);
             ps.setString(3, name);
@@ -156,7 +156,7 @@ public class UserRepository {
         User user = null;
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, username, password, fullname, email, bio, imagepath FROM users WHERE email like ?");
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, username, password, fullname, email, bio, imagepath, usergroup FROM users WHERE email like ?");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -167,8 +167,9 @@ public class UserRepository {
             String dbEmail = rs.getString(5);
             String dbBio = rs.getString(6);
             String dbImagePath = rs.getString(7);
+            int dbUsergroup = rs.getInt(8);
 
-            user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio, dbImagePath);
+            user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio, dbImagePath, dbUsergroup);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -263,7 +264,6 @@ public class UserRepository {
                     ps.setString(1, candID);
                     ps.setInt(2, ownerid);
                     ps.executeUpdate();
-                    System.out.println("added pt2");
                 }else{
                     candID = candID + ", " + candidates;
                     ps.setString(1, candID);

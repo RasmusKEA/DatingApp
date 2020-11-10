@@ -28,6 +28,10 @@
             <form action="/myMessages" method="get">
                 <input type="submit" value="MINE BESKEDER" class="myProfile-head2">
             </form>
+
+            <form action="/adminMemberList" method="post">
+                <input th:if="@{${user.getUsergroup() == '0'}}" type="submit" value="MEDLEMMER" class="cand-head1">
+            </form>
         </div>
     </div>
 </div>

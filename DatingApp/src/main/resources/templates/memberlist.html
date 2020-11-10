@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MEDLEMMER</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="/css/style.css" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container vr">
+    <div class="row">
+        <div class="col-sm">
+            <form action="/logout" method="post">
+                <input type="image" id="logo" alt="logo" src="online-dating.png" class="logo" style="width: 75px; height: 75px;">
+            </form>
+        </div>
+        <div class="col-sm">
+            <form action="/myProfile" method="get">
+                <input type="submit" value="MIN PROFIL" class="cand-head">
+            </form>
+
+            <form action="/explorePost" method="post">
+                <input type="submit" value="UDFORSK" class="cand-head1">
+            </form>
+
+            <form action="/adminMemberList" method="post">
+                <input th:if="user.getUsergroup == 0" type="submit" value="UDFORSK" class="cand-head1">
+            </form>
+        </div>
+    </div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>  </th>
+        <th> Navn </th>
+        <th> Biografi </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${candList.empty and candList ne null}">
+        <td colspan="2"> Du har ikke tilføjet nogen til din kandidatliste endnu </td>
+    </tr>
+    <tr th:each="candidate : ${candList}">
+        <td><img class="candList-pb" th:src="@{${candidate.imagePath}}"/></td>
+        <td><span th:text="${candidate.fullName}"> Navn </span></td>
+        <td><span th:text="${candidate.bio}"> Biografi </span></td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

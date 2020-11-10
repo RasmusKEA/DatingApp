@@ -3,7 +3,7 @@ package com.example.demo.models;
 public class User {
     private String fullName, username, password, email, bio, imageName;
 
-    private int userid;
+    private int userid, usergroup;
 
     public User(int userid, String username, String password, String fullName, String email, String bio) {
         this.fullName = fullName;
@@ -14,7 +14,7 @@ public class User {
         this.bio = bio;
 
     }
-    public User (int userid, String username, String password, String fullName, String email, String bio, String imageName){
+    public User (int userid, String username, String password, String fullName, String email, String bio, String imageName, int usergroup){
         this.fullName = fullName;
         this.username = username;
         this.password = password;
@@ -22,6 +22,7 @@ public class User {
         this.userid = userid;
         this.bio = bio;
         this.imageName = imageName;
+        this.usergroup = usergroup;
     }
 
     public User(int userid, String fullName, String bio, String imageName){
@@ -107,5 +108,13 @@ public class User {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public int getUsergroup() {
+        return usergroup;
+    }
+
+    public void setUsergroup(int usergroup) {
+        this.usergroup = usergroup;
     }
 }

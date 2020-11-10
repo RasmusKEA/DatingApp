@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.models.Candidate;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
+import com.mysql.cj.PreparedQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,8 @@ public class DatingController {
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
 
+        System.out.println(user.getUsergroup());
+
         if(user!=null){
             return "myProfile";
         } else{
@@ -76,6 +79,14 @@ public class DatingController {
         ArrayList<Candidate> candList = (ArrayList<Candidate>) candSession.getAttribute("candList");
         model.addAttribute("candList", candList);
         return "candidateList.html";
+    }
+
+    @GetMapping("/memberlist")
+    public String memberlist(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        return "memberlist.html";
     }
 
 
@@ -187,8 +198,16 @@ public class DatingController {
             ur.addToCandidateList(user.getUserid(), candUser.getUserid());
             return explorePost(candRequest, request);
         }
-
         return explorePost(candRequest, request);
+    }
+
+    @PostMapping("/adminMemberList")
+    public String adminMemberList(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+
+        return "reidrect:/memberlist";
     }
 
     @PostMapping("/showCandidateList")
