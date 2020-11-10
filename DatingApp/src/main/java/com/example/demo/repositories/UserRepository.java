@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.Candidate;
+import com.example.demo.models.Message;
 import com.example.demo.models.User;
 import com.example.demo.services.UserServices;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
@@ -326,6 +327,102 @@ public class UserRepository {
 
         return user;
     }
+
+    public boolean isInCandList(int ownerid, int candid){
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+            ps.setInt(1, ownerid);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String usersInList = rs.getString(1);
+
+            if(usersInList != null){
+                String[] arr = usersInList.split(", ");
+
+                String candID = String.valueOf(candid);
+                for (int i = 0; i < arr.length; i++) {
+                    if(arr[i].equals(candID)){
+                        System.out.println("is in cand list: " + arr[i].equals(candID));
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isCandListFull(int ownerid){
+        int maxID = findMax();
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+            ps.setInt(1, ownerid);
+
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String usersInList = rs.getString(1);
+            System.out.println("usersinlist string: " + usersInList);
+
+            if(usersInList != null){
+                String[] arr = usersInList.split(", ");
+                if(arr.length-2 == maxID || arr.length-1 == maxID){
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void sendMessage( int toID, String message, int fromID){
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("INSERT INTO usermessage (toid, message, fromid) VALUES (?,?,?)");
+
+
+            ps.setInt(1, toID);
+            ps.setString(2, message);
+            ps.setInt(3, fromID);
+
+            Message ms = new Message(toID, message, fromID);
+                ps.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+    }
+
+    public ArrayList<Message> receiveMsg(int toid){
+        ArrayList<Message> arrOfMsg = new ArrayList<>();
+        Message message = null;
+        try{
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT message, fromid FROM usermessage WHERE toid = ?");
+            ps.setInt(1, toid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            int fromID = rs.getInt(2);
+
+            PreparedStatement ps1 = establishConnection().prepareStatement("SELECT fullname, message FROM users, usermessage WHERE userid = ? AND fromid = ?");
+
+            ps1.setInt(1, fromID);
+            ps1.setInt(2, fromID);
+            ResultSet rs1 = ps1.executeQuery();
+
+            while(rs1.next()){
+                arrOfMsg.add(new Message(rs1.getString(1), rs1.getString(2)));
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return arrOfMsg;
+    }
+
 
 }
 

@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Candidate {
     private String fullName, imagePath, bio;
     private int userid;
+    private String idAndName;
 
     public Candidate(int userid, String fullName, String bio, String imagePath) {
         this.userid = userid;
@@ -45,6 +46,9 @@ public class Candidate {
         this.bio = bio;
     }
 
+    public String getIdAndName() {
+        return userid + " " + fullName;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
