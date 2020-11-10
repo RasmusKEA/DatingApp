@@ -406,10 +406,11 @@ public class UserRepository {
             rs.next();
             int fromID = rs.getInt(2);
 
-            PreparedStatement ps1 = establishConnection().prepareStatement("SELECT fullname, message FROM users, usermessage WHERE userid = ? AND fromid = ?");
+            PreparedStatement ps1 = establishConnection().prepareStatement("SELECT fullname, message FROM users, usermessage WHERE userid = ? AND fromid = ? AND toid = ?");
 
             ps1.setInt(1, fromID);
             ps1.setInt(2, fromID);
+            ps1.setInt(3, toid);
             ResultSet rs1 = ps1.executeQuery();
 
             while(rs1.next()){
