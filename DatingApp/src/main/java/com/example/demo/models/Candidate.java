@@ -3,6 +3,7 @@ package com.example.demo.models;
 public class Candidate {
     private String fullName, imagePath, bio;
     private int userid;
+    private String idAndName;
 
     public Candidate(int userid, String fullName, String imagePath, String bio) {
         this.userid = userid;
@@ -41,5 +42,9 @@ public class Candidate {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getIdAndName() {
+        return userid + " " + fullName;
     }
 }

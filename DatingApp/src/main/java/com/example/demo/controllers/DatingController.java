@@ -1,15 +1,18 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Candidate;
+import com.example.demo.models.Message;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Array;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
@@ -74,6 +77,21 @@ public class DatingController {
         return "candidateList.html";
     }
 
+    @GetMapping("/messages")
+    public String messages(HttpServletRequest msgRequest, Model model){
+        HttpSession msgSession = msgRequest.getSession();
+        ArrayList<Candidate> candList = (ArrayList<Candidate>) msgSession.getAttribute("candList");
+        model.addAttribute("candList", candList);
+
+        ArrayList<Message> msgList = (ArrayList<Message>) msgSession.getAttribute("arrOfMsg");
+        model.addAttribute("arrOfMsg", msgList);
+
+
+
+
+        return "/messages.html";
+    }
+
 
     @PostMapping("/loginPost")
     public String formPost(HttpServletRequest request){
@@ -109,18 +127,7 @@ public class DatingController {
         return "redirect:/";
     }
 
-    @PostMapping("/infoPost")
-    public String myProfileBio(HttpServletRequest request){
-        String bio = request.getParameter("bio");
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        System.out.println(user.getEmail());
-        System.out.println(bio);
 
-        UserRepository ur = new UserRepository();
-        ur.saveUserBio(bio, user.getEmail());
-        return "redirect:/myProfile";
-    }
 
     @PostMapping("/PasswordPost")
     public String changePassword(HttpServletRequest request){
@@ -206,10 +213,27 @@ public class DatingController {
 
         HttpSession candSession = candReq.getSession();
         candSession.setAttribute("candList", candList);
-
-
         return "redirect:/candidateList";
     }
+
+    @PostMapping("/showMsgReceivers")
+    public String showMsgReceivers(HttpServletRequest request, HttpServletRequest msgRequest){
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        System.out.println(user.getUserid());
+
+        ArrayList<Candidate> candList = ur.listOfCandidates(user.getUserid());
+
+        HttpSession msgSession = msgRequest.getSession();
+        msgSession.setAttribute("candList", candList);
+
+
+        ArrayList<Message> arrOfMsg = ur.receiveMsg(user.getUserid());
+        msgSession.setAttribute("arrOfMsg", arrOfMsg);
+
+        return "redirect:/messages";
+    }
+
 
     @PostMapping("/logout")
     public String logout(HttpServletRequest request){
@@ -224,8 +248,39 @@ public class DatingController {
         return "redirect:/";
     }
 
-    @GetMapping("/myMessages")
-    public String myMessages(){
-        return "messages.html";
+
+    @PostMapping("/infoPost")
+    public String myProfileBio(HttpServletRequest request){
+        String bio = request.getParameter("bio");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        System.out.println(user.getEmail());
+        System.out.println(bio);
+
+        UserRepository ur = new UserRepository();
+        ur.saveUserBio(bio, user.getEmail());
+        return "redirect:/myProfile";
     }
+
+
+    @PostMapping("/submitMessage")
+    public String submitMessage(HttpServletRequest request, HttpServletRequest msgRequest){
+        HttpSession session = request.getSession();
+        HttpSession msgSession = msgRequest.getSession();
+        User user = (User) session.getAttribute("user");
+        System.out.println(user.getUserid());
+
+        String toID = msgRequest.getParameter("dropdown");
+        System.out.println(toID);
+        int toIDasINT = Integer.parseInt(toID);
+
+        String msg = msgRequest.getParameter("message");
+        System.out.println(msg);
+
+        UserRepository ur = new UserRepository();
+        ur.sendMessage(toIDasINT, msg, user.getUserid());
+        return "redirect:/messages";
+    }
+
+
 }
