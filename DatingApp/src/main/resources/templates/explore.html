@@ -31,11 +31,9 @@
 </div>
 <div class="explore-align">
 	<div class="candidate-view">
-		<img th:src="@{${testUser.imageName}}" class="explore-image"/>
-		<p th:text="@{${testUser.fullName}}" class="explore-name"></p>
-		<p th:text="@{${testUser.bio}}" class="explore-bio"></p>
-
-
+		<img th:src="@{${candUser.imagePath}}" class="explore-image"/>
+		<p th:text="@{${candUser.fullName}}" class="explore-name"></p>
+		<p th:text="@{${candUser.bio}}" class="explore-bio"></p>
 
 			<div class="explore-buttonrow">
 				<div class="noButton">

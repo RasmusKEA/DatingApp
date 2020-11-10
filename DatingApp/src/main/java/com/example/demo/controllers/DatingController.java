@@ -59,11 +59,16 @@ public class DatingController {
     }
 
     @GetMapping("/explore")
-    public String explore(HttpServletRequest testRequest, Model model){
-        HttpSession testSession = testRequest.getSession();
-        User testUser = (User) testSession.getAttribute("testUser");
-        model.addAttribute("testUser", testUser);
-        System.out.println(testUser.getFullName());
+    public String explore(HttpServletRequest candRequest, Model model){
+        HttpSession candSession = candRequest.getSession();
+        Candidate candUser = (Candidate) candSession.getAttribute("candUser");
+        if(candUser!= null){
+            model.addAttribute("candUser", candUser);
+        }else{
+            Candidate noCandUser = new Candidate(0, "Desværre!", "Der er ikke flere kandidater", "sad.png");
+            model.addAttribute("candUser", noCandUser);
+
+        }
 
         return "explore.html";
     }
@@ -73,7 +78,6 @@ public class DatingController {
         HttpSession candSession = candReq.getSession();
         ArrayList<Candidate> candList = (ArrayList<Candidate>) candSession.getAttribute("candList");
         model.addAttribute("candList", candList);
-        System.out.println("getmapping print: " + candList);
         return "candidateList.html";
     }
 
@@ -126,8 +130,13 @@ public class DatingController {
 
         return "redirect:/";
     }
-
-
+/*
+    @PostMapping("/infoPost")
+    public String myProfileBio(HttpServletRequest request) {
+        String bio = request.getParameter("bio");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+    }*/
 
     @PostMapping("/PasswordPost")
     public String changePassword(HttpServletRequest request){
@@ -161,47 +170,39 @@ public class DatingController {
     }
 
     @PostMapping("/explorePost")
-    public String explorePost(HttpServletRequest testRequest, HttpServletRequest request){
+    public String explorePost(HttpServletRequest candRequest, HttpServletRequest request){
 
-        User testUser = null;
+        Candidate candUser = null;
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        while(true){
-            if(!ur.isCandListFull(user.getUserid())){
-                testUser = ur.findExploreUser();
-                if(testUser.getUserid() != user.getUserid() && !ur.isCandListFull(user.getUserid())) {
-                    if (!ur.isInCandList(user.getUserid(), testUser.getUserid()) && !ur.isCandListFull(user.getUserid())) {
-                        break;
-                    }
-                }
-            }
-            ur.findExploreUser();
-        }
+        candUser = ur.findExploreUser(user.getUserid());
 
-
-        HttpSession testSession = testRequest.getSession();
-        testSession.setAttribute("testUser", testUser);
+        HttpSession candSession = candRequest.getSession();
+        candSession.setAttribute("candUser", candUser);
 
         return "redirect:/explore";
     }
 
     @PostMapping("/notAddPost")
-    public String notAddPost(HttpServletRequest testRequest, HttpServletRequest request){
-        return explorePost(testRequest, request);
+    public String notAddPost(HttpServletRequest candRequest, HttpServletRequest request){
+        return explorePost(candRequest, request);
     }
 
     @PostMapping("/addToCandidate")
-    public String addToCandidate(HttpServletRequest testRequest, Model model, HttpServletRequest request){
-        HttpSession testSession = testRequest.getSession();
-        User testUser = (User) testSession.getAttribute("testUser");
-        model.addAttribute("testUser", testUser);
+    public String addToCandidate(HttpServletRequest candRequest, Model model, HttpServletRequest request){
+        HttpSession candSession = candRequest.getSession();
+        Candidate candUser = (Candidate) candSession.getAttribute("candUser");
+        model.addAttribute("candUser", candUser);
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        ur.addToCandidateList(user.getUserid(), testUser.getUserid());
+        if(candUser != null){
+            ur.addToCandidateList(user.getUserid(), candUser.getUserid());
+            return explorePost(candRequest, request);
+        }
 
-        return explorePost(testRequest, request);
+        return explorePost(candRequest, request);
     }
 
     @PostMapping("/showCandidateList")

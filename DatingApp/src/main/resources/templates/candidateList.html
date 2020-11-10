@@ -36,7 +36,7 @@
 	</tr>
 	</thead>
 	<tbody>
-	<tr th:if="${candList.empty}">
+	<tr th:if="${candList.empty and candList ne null}">
 		<td colspan="2"> Du har ikke tilføjet nogen til din kandidatliste endnu </td>
 	</tr>
 	<tr th:each="candidate : ${candList}">

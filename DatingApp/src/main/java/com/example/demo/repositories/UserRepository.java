@@ -39,10 +39,6 @@ public class UserRepository {
             rs.next();
             int ownerid = rs.getInt(1);
             createCandidateList(ownerid);
-
-
-
-
             System.out.println("Din konto er nu blevet oprettet");
         } catch (SQLException e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
@@ -82,26 +78,37 @@ public class UserRepository {
         return maxID;
     }
 
-    public User findExploreUser() {
-        User user = null;
-        int maxID = findMax();
+    public Candidate findExploreUser(int ownerid) {
+        Candidate candidate = null;
         Random r = new Random();
-        int result = r.nextInt((maxID + 1) - 2) + 2;
-        System.out.println("result: " + result);
+        Candidate candToReturn = null;
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath FROM users where userid like ?;");
-            ps.setInt(1, result);
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath FROM users where  userid != 1 AND userid != ?");
+            ps.setInt(1, ownerid);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                rs.getString(1);
-                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-                System.out.println(rs.getInt(1) + rs.getString(2) + rs.getString(3) + rs.getString(4));
+            ArrayList<Candidate> listOfUsersCandidateList = listOfCandidates(ownerid);
+            ArrayList<Candidate> listOfAllUsers = new ArrayList<>();
+
+            rs.next();
+            while (rs.next()) {
+                candidate = new Candidate(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                listOfAllUsers.add(candidate);
             }
+
+            if(listOfUsersCandidateList != null){
+                listOfAllUsers.removeAll(listOfUsersCandidateList);
+            }
+
+
+            if (listOfAllUsers.size() != 0) {
+            candToReturn = listOfAllUsers.get(r.nextInt(listOfAllUsers.size()));
+        }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user;
+        return candToReturn;
     }
 
     public User login(String email, String password) {
@@ -162,7 +169,6 @@ public class UserRepository {
             String dbBio = rs.getString(6);
             String dbImagePath = rs.getString(7);
 
-
             user = new User(dbUserID, dbUsername, dbPassword, dbFullName, dbEmail, dbBio, dbImagePath);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,9 +179,7 @@ public class UserRepository {
 
 
     public void updateImagePath(String imagePath, int userID){
-
         PreparedStatement ps = null;
-
         try {
             ps = establishConnection().prepareStatement("UPDATE users SET imagepath = ? WHERE (userid = ?)");
 
@@ -246,33 +250,33 @@ public class UserRepository {
     public void addToCandidateList(int ownerid, int candidateid){
 
         String candID = String.valueOf(candidateid);
+        if(ownerid != 0){
+            try {
+                PreparedStatement ps1 = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+                ps1.setInt(1, ownerid);
+                ResultSet rs = ps1.executeQuery();
+                rs.next();
+                String candidates = rs.getString(1);
 
-        try {
+                PreparedStatement ps = establishConnection().prepareStatement("UPDATE candidatelist SET usersInList = ? WHERE (ownerid = ?)");
+                if(candidates == null || candidates.isEmpty()){
 
-            PreparedStatement ps1 = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
-            ps1.setInt(1, ownerid);
-            ResultSet rs = ps1.executeQuery();
-            rs.next();
-            String candidates = rs.getString(1);
-            System.out.println(candidates);
+                    ps.setString(1, candID);
+                    ps.setInt(2, ownerid);
+                    ps.executeUpdate();
+                    System.out.println("added pt2");
+                }else{
+                    candID = candID + ", " + candidates;
+                    ps.setString(1, candID);
+                    ps.setInt(2, ownerid);
+                    ps.executeUpdate();
+                    System.out.println("added");
+                }
 
-            PreparedStatement ps = establishConnection().prepareStatement("UPDATE candidatelist SET usersInList = ? WHERE (ownerid = ?)");
-            if(candidates == null || candidates.isEmpty() || candidates.length() == 0){
-
-                ps.setString(1, candID);
-                ps.setInt(2, ownerid);
-                ps.executeUpdate();
-            }else{
-                candID = candID + ", " + candidates;
-                ps.setString(1, candID);
-                ps.setInt(2, ownerid);
-                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
 
     public ArrayList<Candidate> listOfCandidates(int ownerid){
@@ -289,20 +293,16 @@ public class UserRepository {
             if(candidates != null){
                 String[] arr = candidates.split(", ");
                 for (int i = 0; i < arr.length; i++) {
-                    System.out.println(arr);
                     Candidate user = fullUserObjectByID(arr[i]);
                     listOfCandidates.add(user);
-                    System.out.println(user.getFullName());
 
                 }
             }
-
-
-
-
+            return listOfCandidates;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        listOfCandidates = null;
         return listOfCandidates;
     }
 
@@ -310,18 +310,17 @@ public class UserRepository {
         Candidate user = null;
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, imagepath, bio FROM users WHERE userid like ?");
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath  FROM users WHERE userid like ?");
             ps.setString(1, userid);
             ResultSet rs = ps.executeQuery();
             rs.next();
             int dbUserID = rs.getInt(1);
             String dbFullName = rs.getString(2);
-            String dbImagePath = rs.getString(3);
-            String dbBio = rs.getString(4);
+            String dbBio = rs.getString(3);
+            String dbImagePath = rs.getString(4);
 
+            user = new Candidate(dbUserID, dbFullName, dbBio, dbImagePath);
 
-
-            user = new Candidate(dbUserID, dbFullName, dbImagePath, dbBio);
         } catch (SQLException e) {
             e.printStackTrace();
         }
