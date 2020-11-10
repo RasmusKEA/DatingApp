@@ -1,5 +1,7 @@
 package com.example.demo.models;
 
+import java.util.Objects;
+
 public class Candidate {
     private String fullName, imagePath, bio;
     private int userid;
@@ -41,5 +43,18 @@ public class Candidate {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Candidate candidate = (Candidate) o;
+        return userid == candidate.userid;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userid);
     }
 }

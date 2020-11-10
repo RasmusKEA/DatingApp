@@ -59,8 +59,13 @@ public class DatingController {
     public String explore(HttpServletRequest candRequest, Model model){
         HttpSession candSession = candRequest.getSession();
         Candidate candUser = (Candidate) candSession.getAttribute("candUser");
-        model.addAttribute("candUser", candUser);
-        System.out.println(candUser.getFullName());
+        if(candUser!= null){
+            model.addAttribute("candUser", candUser);
+        }else{
+            Candidate noCandUser = new Candidate(0, "Desværre!", "Der er ikke flere kandidater", "sad.png");
+            model.addAttribute("candUser", noCandUser);
+
+        }
 
         return "explore.html";
     }
@@ -70,7 +75,6 @@ public class DatingController {
         HttpSession candSession = candReq.getSession();
         ArrayList<Candidate> candList = (ArrayList<Candidate>) candSession.getAttribute("candList");
         model.addAttribute("candList", candList);
-        System.out.println("getmapping print: " + candList);
         return "candidateList.html";
     }
 
@@ -114,8 +118,6 @@ public class DatingController {
         String bio = request.getParameter("bio");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        System.out.println(user.getEmail());
-        System.out.println(bio);
 
         UserRepository ur = new UserRepository();
         ur.saveUserBio(bio, user.getEmail());
@@ -160,18 +162,7 @@ public class DatingController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        while(true){
-            if(!ur.isCandListFull(user.getUserid())){
-                candUser = ur.findExploreUser();
-                if(candUser.getUserid() != user.getUserid() && !ur.isCandListFull(user.getUserid())) {
-                    if (!ur.isInCandList(user.getUserid(), candUser.getUserid()) && !ur.isCandListFull(user.getUserid())) {
-                        break;
-                    }
-                }
-            }
-            ur.findExploreUser();
-        }
-
+        candUser = ur.findExploreUser(user.getUserid());
 
         HttpSession candSession = candRequest.getSession();
         candSession.setAttribute("candUser", candUser);
@@ -192,7 +183,10 @@ public class DatingController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        ur.addToCandidateList(user.getUserid(), candUser.getUserid());
+        if(candUser != null){
+            ur.addToCandidateList(user.getUserid(), candUser.getUserid());
+            return explorePost(candRequest, request);
+        }
 
         return explorePost(candRequest, request);
     }

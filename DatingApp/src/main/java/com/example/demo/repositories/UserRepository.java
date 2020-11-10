@@ -77,27 +77,34 @@ public class UserRepository {
         return maxID;
     }
 
-    public Candidate findExploreUser() {
+    public Candidate findExploreUser(int ownerid) {
         Candidate candidate = null;
-        User user = null;
-        int maxID = findMax();
         Random r = new Random();
-        int result = r.nextInt((maxID + 1) - 2) + 2;
-        System.out.println("result: " + result);
+        Candidate candToReturn = null;
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath FROM users where userid like ?;");
-            ps.setInt(1, result);
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath FROM users where  userid != 1 AND userid != ?");
+            ps.setInt(1, ownerid);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                rs.getString(1);
+            ArrayList<Candidate> listOfUsersCandidateList = listOfCandidates(ownerid);
+            ArrayList<Candidate> listOfAllUsers = new ArrayList<>();
+
+            rs.next();
+            while (rs.next()) {
                 candidate = new Candidate(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-                System.out.println(rs.getInt(1) + rs.getString(2) + rs.getString(3) + rs.getString(4));
+                listOfAllUsers.add(candidate);
             }
+
+            listOfAllUsers.removeAll(listOfUsersCandidateList);
+
+            if (listOfAllUsers.size() != 0) {
+            candToReturn = listOfAllUsers.get(r.nextInt(listOfAllUsers.size()));
+        }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return candidate;
+        return candToReturn;
     }
 
     public User login(String email, String password) {
@@ -239,31 +246,32 @@ public class UserRepository {
     public void addToCandidateList(int ownerid, int candidateid){
 
         String candID = String.valueOf(candidateid);
+        if(ownerid != 0){
+            try {
+                PreparedStatement ps1 = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
+                ps1.setInt(1, ownerid);
+                ResultSet rs = ps1.executeQuery();
+                rs.next();
+                String candidates = rs.getString(1);
 
-        try {
-            PreparedStatement ps1 = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
-            ps1.setInt(1, ownerid);
-            ResultSet rs = ps1.executeQuery();
-            rs.next();
-            String candidates = rs.getString(1);
-            System.out.println(candidates);
+                PreparedStatement ps = establishConnection().prepareStatement("UPDATE candidatelist SET usersInList = ? WHERE (ownerid = ?)");
+                if(candidates == null || candidates.isEmpty() || candidates.length() == 0){
 
-            PreparedStatement ps = establishConnection().prepareStatement("UPDATE candidatelist SET usersInList = ? WHERE (ownerid = ?)");
-            if(candidates == null || candidates.isEmpty() || candidates.length() == 0){
+                    ps.setString(1, candID);
+                    ps.setInt(2, ownerid);
+                    ps.executeUpdate();
+                }else{
+                    candID = candID + ", " + candidates;
+                    ps.setString(1, candID);
+                    ps.setInt(2, ownerid);
+                    ps.executeUpdate();
+                }
 
-                ps.setString(1, candID);
-                ps.setInt(2, ownerid);
-                ps.executeUpdate();
-            }else{
-                candID = candID + ", " + candidates;
-                ps.setString(1, candID);
-                ps.setInt(2, ownerid);
-                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+
 
     }
 
@@ -281,13 +289,11 @@ public class UserRepository {
             if(candidates != null){
                 String[] arr = candidates.split(", ");
                 for (int i = 0; i < arr.length; i++) {
-                    System.out.println(arr);
                     Candidate user = fullUserObjectByID(arr[i]);
                     listOfCandidates.add(user);
-                    System.out.println(user.getFullName());
-
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -331,7 +337,6 @@ public class UserRepository {
                 String candID = String.valueOf(candid);
                 for (int i = 0; i < arr.length; i++) {
                     if(arr[i].equals(candID)){
-                        System.out.println("is in cand list: " + arr[i].equals(candID));
                         return true;
                     }
                 }
@@ -351,7 +356,6 @@ public class UserRepository {
             ResultSet rs = ps.executeQuery();
             rs.next();
             String usersInList = rs.getString(1);
-            System.out.println("usersinlist string: " + usersInList);
 
             if(usersInList != null){
                 String[] arr = usersInList.split(", ");
