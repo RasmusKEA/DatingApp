@@ -95,7 +95,10 @@ public class UserRepository {
                 listOfAllUsers.add(candidate);
             }
 
-            listOfAllUsers.removeAll(listOfUsersCandidateList);
+            if(listOfUsersCandidateList != null){
+                listOfAllUsers.removeAll(listOfUsersCandidateList);
+            }
+
 
             if (listOfAllUsers.size() != 0) {
             candToReturn = listOfAllUsers.get(r.nextInt(listOfAllUsers.size()));
@@ -255,24 +258,24 @@ public class UserRepository {
                 String candidates = rs.getString(1);
 
                 PreparedStatement ps = establishConnection().prepareStatement("UPDATE candidatelist SET usersInList = ? WHERE (ownerid = ?)");
-                if(candidates == null || candidates.isEmpty() || candidates.length() == 0){
+                if(candidates == null || candidates.isEmpty()){
 
                     ps.setString(1, candID);
                     ps.setInt(2, ownerid);
                     ps.executeUpdate();
+                    System.out.println("added pt2");
                 }else{
                     candID = candID + ", " + candidates;
                     ps.setString(1, candID);
                     ps.setInt(2, ownerid);
                     ps.executeUpdate();
+                    System.out.println("added");
                 }
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     public ArrayList<Candidate> listOfCandidates(int ownerid){
@@ -291,12 +294,14 @@ public class UserRepository {
                 for (int i = 0; i < arr.length; i++) {
                     Candidate user = fullUserObjectByID(arr[i]);
                     listOfCandidates.add(user);
+
                 }
             }
-
+            return listOfCandidates;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        listOfCandidates = null;
         return listOfCandidates;
     }
 
@@ -321,55 +326,6 @@ public class UserRepository {
 
         return user;
     }
-
-    public boolean isInCandList(int ownerid, int candid){
-        try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
-            ps.setInt(1, ownerid);
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            String usersInList = rs.getString(1);
-
-            if(usersInList != null){
-                String[] arr = usersInList.split(", ");
-
-                String candID = String.valueOf(candid);
-                for (int i = 0; i < arr.length; i++) {
-                    if(arr[i].equals(candID)){
-                        return true;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean isCandListFull(int ownerid){
-        int maxID = findMax();
-        try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
-            ps.setInt(1, ownerid);
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            String usersInList = rs.getString(1);
-
-            if(usersInList != null){
-                String[] arr = usersInList.split(", ");
-                if(arr.length-2 == maxID || arr.length-1 == maxID){
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
 
 }
 
