@@ -89,11 +89,11 @@ public class DatingController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
-        return "memberlist.html";
+        return "/memberlist.html";
     }
 
-        @GetMapping("/messages")
-        public String messages(HttpServletRequest msgRequest, Model model){
+    @GetMapping("/messages")
+    public String messages(HttpServletRequest msgRequest, Model model){
         HttpSession msgSession = msgRequest.getSession();
         ArrayList<Candidate> candList = (ArrayList<Candidate>) msgSession.getAttribute("candList");
         model.addAttribute("candList", candList);
@@ -138,13 +138,6 @@ public class DatingController {
 
         return "redirect:/";
     }
-/*
-    @PostMapping("/infoPost")
-    public String myProfileBio(HttpServletRequest request) {
-        String bio = request.getParameter("bio");
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-    }*/
 
     @PostMapping("/PasswordPost")
     public String changePassword(HttpServletRequest request){
@@ -218,7 +211,7 @@ public class DatingController {
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
 
-        return "reidrect:/memberlist";
+        return "redirect:/memberlist";
     }
 
     @PostMapping("/showCandidateList")
