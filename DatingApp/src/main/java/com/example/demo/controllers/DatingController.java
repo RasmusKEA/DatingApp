@@ -112,7 +112,7 @@ public class DatingController {
 
         boolean emptyList = false;
 
-        if(msgList == null){
+        if(msgList == null || msgList.size()==0){
             emptyList = true;
         }
         model.addAttribute("emptyList", emptyList);
@@ -253,7 +253,6 @@ public class DatingController {
     public String showMsgReceivers(HttpServletRequest request, HttpServletRequest msgRequest){
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        System.out.println(user.getUserid());
 
         ArrayList<Candidate> candList = ur.listOfCandidates(user.getUserid());
 
@@ -287,8 +286,6 @@ public class DatingController {
         String bio = request.getParameter("bio");
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        System.out.println(user.getEmail());
-        System.out.println(bio);
 
         UserRepository ur = new UserRepository();
         ur.saveUserBio(bio, user.getEmail());
@@ -302,14 +299,11 @@ public class DatingController {
         HttpSession session = request.getSession();
         HttpSession msgSession = msgRequest.getSession();
         User user = (User) session.getAttribute("user");
-        System.out.println(user.getUserid());
 
         String toID = msgRequest.getParameter("dropdown");
-        System.out.println(toID);
         int toIDasINT = Integer.parseInt(toID);
 
         String msg = msgRequest.getParameter("message");
-        System.out.println(msg);
 
         UserRepository ur = new UserRepository();
         ur.sendMessage(toIDasINT, msg, user.getUserid());
@@ -321,7 +315,6 @@ public class DatingController {
         String s = allReq.getParameter("userid");
         int userid = Integer.parseInt(s);
         ur.blacklistUser(userid);
-        System.out.println(s);
 
         return adminMemberList(allReq);
     }

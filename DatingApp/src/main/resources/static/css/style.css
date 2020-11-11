@@ -245,24 +245,25 @@
     float: right;
     font-size: 24px;
     color: #343638;
-    margin-right: 20px;
+    margin-left: 20px;
     padding: 0;
     border: none;
     opacity: 50%;
 }
 
-.cand-head1{
+.myProfile-head3{
     background: none;
     text-decoration: none;
     margin-top: 20px;
+    margin-right: 20px;
     float: right;
     font-size: 24px;
     color: #343638;
-    margin-right: 20px;
     padding: 0;
     border: none;
     opacity: 50%;
 }
+
 
 
 .candidate-view{

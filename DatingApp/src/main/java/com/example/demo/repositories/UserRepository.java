@@ -62,29 +62,13 @@ public class UserRepository {
         }
     }
 
-
-    public int findMax() {
-        int maxID = 0;
-        try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT COUNT(*) FROM users;");
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            rs.getInt(1);
-            maxID = rs.getInt(1);
-            System.out.println(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return maxID;
-    }
-
     public Candidate findExploreUser(int ownerid) {
         Candidate candidate = null;
         Random r = new Random();
         Candidate candToReturn = null;
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath FROM users where  userid != 1 AND userid != ?");
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, bio, imagepath FROM users where  userid != 1 AND userid != ? AND usergroup != 2");
             ps.setInt(1, ownerid);
             ResultSet rs = ps.executeQuery();
             ArrayList<Candidate> listOfUsersCandidateList = listOfCandidates(ownerid);
@@ -275,7 +259,6 @@ public class UserRepository {
                     ps.setString(1, candID);
                     ps.setInt(2, ownerid);
                     ps.executeUpdate();
-                    System.out.println("added");
                 }
 
             } catch (SQLException e) {
@@ -295,7 +278,7 @@ public class UserRepository {
             rs.next();
             String candidates = rs.getString(1);
 
-            if(candidates != null){
+            if(candidates != null && candidates.length() != 0 && candidates != ""){
                 String[] arr = candidates.split(", ");
                 for (int i = 0; i < arr.length; i++) {
                     Candidate user = fullUserObjectByID(arr[i]);
@@ -331,55 +314,6 @@ public class UserRepository {
         }
 
         return user;
-    }
-
-    public boolean isInCandList(int ownerid, int candid){
-        try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
-            ps.setInt(1, ownerid);
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            String usersInList = rs.getString(1);
-
-            if(usersInList != null){
-                String[] arr = usersInList.split(", ");
-
-                String candID = String.valueOf(candid);
-                for (int i = 0; i < arr.length; i++) {
-                    if(arr[i].equals(candID)){
-                        System.out.println("is in cand list: " + arr[i].equals(candID));
-                        return true;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean isCandListFull(int ownerid){
-        int maxID = findMax();
-        try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT usersInList FROM candidatelist WHERE ownerid = ?");
-            ps.setInt(1, ownerid);
-
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            String usersInList = rs.getString(1);
-            System.out.println("usersinlist string: " + usersInList);
-
-            if(usersInList != null){
-                String[] arr = usersInList.split(", ");
-                if(arr.length-2 == maxID || arr.length-1 == maxID){
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public void sendMessage( int toID, String message, int fromID){

@@ -21,31 +21,33 @@
 			</form>
 
 			<form action="/explorePost" method="post">
-				<input type="submit" value="UDFORSK" class="cand-head1">
+				<input type="submit" value="UDFORSK" class="cand-head">
 			</form>
 		</div>
 	</div>
 </div>
 
+
 <table>
-	<thead>
 	<tr>
-		<th>  </th>
-		<th> Navn </th>
-		<th> Biografi </th>
+		<th>IMG</th>
+		<th>NAVN</th>
+		<th>BIO</th>
 	</tr>
-	</thead>
-	<tbody>
-	<tr th:if="${candList.empty and candList ne null}">
-		<td colspan="2"> Du har ikke tilføjet nogen til din kandidatliste endnu </td>
+	<tr th:if="${#lists.isEmpty(candList)}">
+		<td colspan="2">Du har ingen kandidater endnu</td>
 	</tr>
 	<tr th:each="candidate : ${candList}">
-		<td><img class="candList-pb" th:src="@{${candidate.imagePath}}"/></td>
-		<td><span th:text="${candidate.fullName}"> Navn </span></td>
-		<td><span th:text="${candidate.bio}"> Biografi </span></td>
+		<td><img class="candList-pb" th:src="${candidate.imagePath}"/></td>
+		<td th:text="${candidate.fullName}"></td>
+		<td th:text="${candidate.bio}"></td>
 	</tr>
-	</tbody>
 </table>
+
+
+
+
+
 
 
 </body>

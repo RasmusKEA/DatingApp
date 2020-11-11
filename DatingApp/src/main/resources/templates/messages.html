@@ -36,7 +36,7 @@
 
 		<form action="/submitMessage" method="post">
 			<select name="dropdown">
-				<option value="0">select operator</option>
+				<option value="0">Vælg modtager</option>
 				<option th:each="candidate : ${candList}" th:value="${candidate.userid}" name="dropdown" th:text="${candidate.idAndName}" ></option>
 			</select>
 
