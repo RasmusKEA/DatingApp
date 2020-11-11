@@ -51,11 +51,10 @@
 		</form>
 
 		<div class="messageMenu">
-
 			<div th:each="messages : ${arrOfMsg}">
 				<span>Besked modtaget fra <span th:text="@{${messages.fullName}}"></span><span>: </span> <span th:text="@{${messages.message}}"></span></span>
 			</div>
-
+			</div>
 
 		</div>
 	</div>

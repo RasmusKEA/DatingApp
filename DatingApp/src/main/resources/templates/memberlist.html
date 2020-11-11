@@ -19,15 +19,19 @@
         </div>
         <div class="col-sm">
             <form action="/myProfile" method="get">
-                <input type="submit" value="MIN PROFIL" class="cand-head">
+                <input type="submit" value="MIN PROFIL" class="members-head">
             </form>
 
             <form action="/explorePost" method="post">
-                <input type="submit" value="UDFORSK" class="cand-head1">
+                <input type="submit" value="UDFORSK" class="members-head2">
+            </form>
+
+            <form action="/showMsgReceivers" method="post">
+                <input type="submit" value="MINE BESKEDER" class="members-head2">
             </form>
 
             <form action="/adminMemberList" method="post">
-                <input th:if="user.getUsergroup == 0" type="submit" value="UDFORSK" class="cand-head1">
+                <input th:if="@{${user.getUsergroup() == 0}}" type="submit" value="MEDLEMMER" class="members-head1">
             </form>
         </div>
     </div>
