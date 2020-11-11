@@ -37,22 +37,18 @@
     </div>
 </div>
 
-<table>
-    <thead>
-    <tr>
-        <th> USERID </th>
-        <th> NAVN </th>
-        <th> USERGROUP </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="users : ${allUsers}">
-        <td><span th:text="${users.userid}"> USERID </span></td>
-        <td><span th:text="${users.fullName}"> NAVN </span></td>
-        <td><span th:text="${users.usergroup}"> USERGROUP </span></td>
-    </tr>
-    </tbody>
-</table>
+
+
+
+<div class="memberList">
+        <div class="testML" th:each="users : ${allUsers}">
+         <form action="/blacklistUser" method="post">
+                <input type="text" th:value="${users.userid}" name="userid" readonly="readonly">
+                <input type="text" th:value="${users.fullName}" name="fullName" readonly="readonly">
+                <input type="submit" value="blacklist">
+            </form>
+        </div>
+</div>
 
 
 </body>

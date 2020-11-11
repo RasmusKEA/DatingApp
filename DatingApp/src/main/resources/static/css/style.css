@@ -553,3 +553,17 @@
     padding: 0;
     border: none;
 }
+
+.flashMsg{
+    display: block;
+    text-align: center;
+}
+
+.flashMsg-text{
+    color: #FA6980;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 25px;
+    margin-bottom: 125px;
+    font-size: 24px;
+}

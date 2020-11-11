@@ -113,19 +113,23 @@ public class UserRepository {
     public User login(String email, String password) {
         User user = null;
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT email, password FROM users WHERE email like ? AND password like ?");
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT email, password, usergroup FROM users WHERE email like ? AND password like ?");
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             rs.next();
             String dbEmail = rs.getString(1);
             String dbPword = rs.getString(2);
+            int dbusergroup = rs.getInt(3);
 
-            if (email.equals(dbEmail) && password.equals(dbPword)) {
+            if (email.equals(dbEmail) && password.equals(dbPword) && dbusergroup != 2) {
                 System.out.println("Korrekt login, velkommen");
                 user = new User(email, password);
                 return fullUserObject(email);
-            } else {
+            } else if(dbusergroup == 2){
+                System.out.println("Du er blevet blacklisted pga. upassende opførsel");
+                return fullUserObject(email);
+            }else{
                 System.out.println("Username eller password er ikke korrekt");
                 return null;
             }
@@ -434,7 +438,7 @@ public class UserRepository {
         ArrayList<User> allUsers = new ArrayList<>();
 
         try {
-            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, usergroup FROM users WHERE userid != 1");
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, usergroup FROM users WHERE userid != 1 AND usergroup = 1");
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -444,6 +448,17 @@ public class UserRepository {
 
         }
         return allUsers;
+    }
+
+    public void blacklistUser(int userid){
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("UPDATE users SET usergroup = 2 WHERE (userid = ?)");
+            ps.setInt(1, userid);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

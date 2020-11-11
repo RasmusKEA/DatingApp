@@ -10,7 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Array;
@@ -86,10 +90,14 @@ public class DatingController {
     }
 
     @GetMapping("/memberlist")
-    public String memberlist(Model model, HttpServletRequest allReq) {
+    public String memberlist(Model model, HttpServletRequest allReq, HttpServletRequest request) {
         HttpSession allSession = allReq.getSession();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         ArrayList<User> allUsers = (ArrayList<User>) allSession.getAttribute("allUsers");
         model.addAttribute("allUsers", allUsers);
+        model.addAttribute("user", user);
+
 
         return "/memberlist.html";
     }
@@ -115,12 +123,18 @@ public class DatingController {
 
 
     @PostMapping("/loginPost")
-    public String formPost(HttpServletRequest request){
+    public String formPost(HttpServletRequest request, RedirectAttributes redirAttrs){
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         User user = ur.login(email, password);
 
+
+
         if(user == null){
+            redirAttrs.addFlashAttribute("message", "Forkert brugernavn eller kodeord. Prøv igen!");
+            return "redirect:/";
+        }else if(user.getUsergroup() == 2){
+            redirAttrs.addFlashAttribute("message", "Du er blevet blacklisted pga. dårlig opførsel!");
             return "redirect:/";
         }
 
@@ -300,6 +314,16 @@ public class DatingController {
         UserRepository ur = new UserRepository();
         ur.sendMessage(toIDasINT, msg, user.getUserid());
         return "redirect:/messages";
+    }
+
+    @PostMapping("/blacklistUser")
+    public String blacklistUser(HttpServletRequest allReq){
+        String s = allReq.getParameter("userid");
+        int userid = Integer.parseInt(s);
+        ur.blacklistUser(userid);
+        System.out.println(s);
+
+        return adminMemberList(allReq);
     }
 
 

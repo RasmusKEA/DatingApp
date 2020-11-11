@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 <html>
 <head>
 	<title>FORSIDE</title>
@@ -10,6 +10,7 @@
 
 <body>
 
+
 <div class="container">
 	<div class="row">
 		<div class="col-sm">
@@ -19,6 +20,10 @@
 			<button class="loginButton" onclick="location.href = '/login';" type="button">LOG IND</button>
 		</div>
 	</div>
+</div>
+
+<div class="flashMsg">
+<p th:text="${message}" class="flashMsg-text"></p>
 </div>
 
 <div>
