@@ -130,8 +130,10 @@ public class UserRepository {
                 return null;
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if(e instanceof SQLException){
+                System.out.println("Forkert brugernavn eller adgangskode");
+            }
         }
         return null;
     }
