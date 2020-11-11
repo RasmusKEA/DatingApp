@@ -90,7 +90,6 @@ public class UserRepository {
             ArrayList<Candidate> listOfUsersCandidateList = listOfCandidates(ownerid);
             ArrayList<Candidate> listOfAllUsers = new ArrayList<>();
 
-            rs.next();
             while (rs.next()) {
                 candidate = new Candidate(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
                 listOfAllUsers.add(candidate);
@@ -422,6 +421,22 @@ public class UserRepository {
             e.printStackTrace();
         }
         return arrOfMsg;
+    }
+
+    public ArrayList<User> getAllUsers(){
+        ArrayList<User> allUsers = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = establishConnection().prepareStatement("SELECT userid, fullname, usergroup FROM users WHERE userid != 1");
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                allUsers.add(new User(rs.getInt(1), rs.getString(2), rs.getInt(3)));
+            }
+        }catch (Exception e){
+
+        }
+        return allUsers;
     }
 
 

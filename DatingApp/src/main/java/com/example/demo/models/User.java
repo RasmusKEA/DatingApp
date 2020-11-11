@@ -50,6 +50,12 @@ public class User {
         this.email = email;
     }
 
+    public User (int userid, String fullname, int usergroup){
+        this.userid = userid;
+        this.fullName = fullname;
+        this.usergroup = usergroup;
+    }
+
     public String getBio() {
         return bio;
     }

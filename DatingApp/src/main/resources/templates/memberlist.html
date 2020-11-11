@@ -31,11 +31,28 @@
             </form>
 
             <form action="/adminMemberList" method="post">
-                <input th:if="@{${user.getUsergroup() == 0}}" type="submit" value="MEDLEMMER" class="members-head1">
+                <input  type="submit" value="MEDLEMMER" class="members-head1">
             </form>
         </div>
     </div>
 </div>
+
+<table>
+    <thead>
+    <tr>
+        <th> USERID </th>
+        <th> NAVN </th>
+        <th> USERGROUP </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="users : ${allUsers}">
+        <td><span th:text="${users.userid}"> USERID </span></td>
+        <td><span th:text="${users.fullName}"> NAVN </span></td>
+        <td><span th:text="${users.usergroup}"> USERGROUP </span></td>
+    </tr>
+    </tbody>
+</table>
 
 
 </body>

@@ -85,10 +85,11 @@ public class DatingController {
     }
 
     @GetMapping("/memberlist")
-    public String memberlist(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("user", user);
+    public String memberlist(Model model, HttpServletRequest allReq) {
+        HttpSession allSession = allReq.getSession();
+        ArrayList<User> allUsers = (ArrayList<User>) allSession.getAttribute("allUsers");
+        model.addAttribute("allUsers", allUsers);
+
         return "/memberlist.html";
     }
 
@@ -206,10 +207,10 @@ public class DatingController {
     }
 
     @PostMapping("/adminMemberList")
-    public String adminMemberList(HttpServletRequest request, Model model){
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("user", user);
+    public String adminMemberList(HttpServletRequest allReq){
+        HttpSession allSession = allReq.getSession();
+        ArrayList<User> allUsers = ur.getAllUsers();
+        allSession.setAttribute("allUsers", allUsers);
 
         return "redirect:/memberlist";
     }
@@ -271,6 +272,7 @@ public class DatingController {
         ur.saveUserBio(bio, user.getEmail());
         return "redirect:/myProfile";
     }
+
 
 
     @PostMapping("/submitMessage")
