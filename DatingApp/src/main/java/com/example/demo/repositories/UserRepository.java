@@ -412,12 +412,17 @@ public class UserRepository {
             ps1.setInt(3, toid);
             ResultSet rs1 = ps1.executeQuery();
 
-            while(rs1.next()){
-                arrOfMsg.add(new Message(rs1.getString(1), rs1.getString(2)));
-            }
+                while(rs1.next()){
+                    arrOfMsg.add(new Message(rs1.getString(1), rs1.getString(2)));
+                }
 
 
         }catch (Exception e){
+            if(e instanceof  SQLException){
+                System.out.println("Ingen beskeder modtaget");
+                arrOfMsg = null;
+                return arrOfMsg;
+            }
             e.printStackTrace();
         }
         return arrOfMsg;

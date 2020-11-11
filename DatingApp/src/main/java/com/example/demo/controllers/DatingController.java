@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Array;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
@@ -94,12 +95,19 @@ public class DatingController {
     }
 
     @GetMapping("/messages")
-    public String messages(HttpServletRequest msgRequest, Model model){
+    public String messages(HttpServletRequest msgRequest, Model model) {
         HttpSession msgSession = msgRequest.getSession();
         ArrayList<Candidate> candList = (ArrayList<Candidate>) msgSession.getAttribute("candList");
         model.addAttribute("candList", candList);
 
         ArrayList<Message> msgList = (ArrayList<Message>) msgSession.getAttribute("arrOfMsg");
+
+        boolean emptyList = false;
+
+        if(msgList == null){
+            emptyList = true;
+        }
+        model.addAttribute("emptyList", emptyList);
         model.addAttribute("arrOfMsg", msgList);
 
         return "/messages.html";

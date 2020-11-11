@@ -50,14 +50,22 @@
 			</div>
 		</form>
 
-		<div class="messageMenu">
-			<div th:each="messages : ${arrOfMsg}">
-				<span>Besked modtaget fra <span th:text="@{${messages.fullName}}"></span><span>: </span> <span th:text="@{${messages.message}}"></span></span>
-			</div>
-			</div>
 
+
+		<div class="messageMenu">
+
+			<span th:switch="${emptyList}">
+
+				<div th:case="false">
+					<div th:each="messages : ${arrOfMsg}">
+						<span>Besked modtaget fra <span th:text="@{${messages.fullName}}"></span><span>: </span> <span th:text="@{${messages.message}}"></span></span>
+					</div>
+				</div>
+				<span th:case="true" class="fas fa-times red-text">Du har ikke modtaget nogen beskeder endnu</span>
+			</span>
 		</div>
 	</div>
+</div>
 
 </div>
 </div>
